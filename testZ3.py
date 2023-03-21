@@ -154,7 +154,7 @@ def situation_test():
     solver.pop()
     solver.push()
     solver.add(cells[0b101] != 1)
-    print("If ac has != 1 bomb in it:" + str(solver.check()))
+    print("If ac has != 1 bomb in it: " + str(solver.check()))
 
 
 def sum_regions(a, b):
