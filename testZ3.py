@@ -3,6 +3,10 @@ from z3 import *
 """
 This file is full of functions that I used to learn how Z3 works.
 The examples exist, yes, but actually screwing around and making observations will be good for upscaling.
+In the future, this file will eventually become useless and not used in the rest of the codebase.
+However, if recruiters open this repo, it's good to have this here so they understand my learning process
+and thinking process. Almost all/all of this code becomes either irrelevant (ex de_morgans) or optimized
+but that doesn't change the fact that this helped me think things through.
 """
 
 
