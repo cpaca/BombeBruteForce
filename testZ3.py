@@ -133,28 +133,17 @@ def situation_test():
     print("Base region situation: " + str(solver.check()))
     # Now prove that a, ab, b, and abc are clear
     # If they are clear, then them being != 0 is UNSAT
-    solver.add(cells[0b001] != 0)
-    print("If a is not-clear: " + str(solver.check()))
+    print("If a is not-clear: " + str(solver.check(cells[0b001] != 0)))
 
-    # Testing the "return to push"
-    solver.pop()
+    # Proving that assumptions only stay true for one exec
     print("Return to push(): " + str(solver.check()))
-    # after some observation, I need to push again after popping
-    solver.push()
 
     # Won't bother with b, but I'll still do ab and abc
-    solver.add(cells[0b011] != 0)
-    print("If ab is not-clear: " + str(solver.check()))
-    solver.pop()
-    solver.push()
-    solver.add(cells[0b111] != 0)
-    print("If abc is not-clear: " + str(solver.check()))
+    print("If ab is not-clear: " + str(solver.check(cells[0b011] != 0)))
+    print("If abc is not-clear: " + str(solver.check(cells[0b111] != 0)))
 
-    # similarly, I guess we could prove ac and bc have exactly one bomb in them
-    solver.pop()
-    solver.push()
-    solver.add(cells[0b101] != 1)
-    print("If ac has != 1 bomb in it: " + str(solver.check()))
+    # Similarly, I guess we could prove ac and bc have exactly one bomb in them
+    print("If ac has != 1 bomb in it: " + str(solver.check(cells[0b101] != 1)))
 
 
 def sum_regions(a, b):
