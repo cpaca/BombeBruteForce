@@ -149,6 +149,9 @@ def situation_test():
     # Similarly, I guess we could prove ac and bc have exactly one bomb in them
     print("If ac has != 1 bomb in it: " + str(solver.check(cells[0b101] != 1)))
 
+    # And one last proof:
+    print("Re-proving base region situation: " + str(solver.check()))
+
 
 def sum_regions(a, b):
     if a is None:
