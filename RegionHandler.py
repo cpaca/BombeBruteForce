@@ -21,7 +21,7 @@ class RegionHandler:
         self.size = len(regions)
         self.regions = [None]*len(regions)
         for i in range(len(self.regions)):
-            regions[i] = Int(chr(65+i), self.ctx)
+            self.regions[i] = Int(chr(65+i), self.ctx)
 
         # Port of SECT 2 and SECT 3  in testZ3.py
         self.cells = [None] * (2**self.size)
@@ -47,6 +47,8 @@ class RegionHandler:
                     # involving invoking C-code
                     # but I'm gonna avoid premature optimization.
                     cell_regions += [loop_num]
+                # Then check the next bit
+                num //= 2
 
             # Finalize info
             self.cells[i] = Int(name, ctx=self.ctx)
