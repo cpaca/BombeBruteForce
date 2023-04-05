@@ -1,6 +1,9 @@
-from testZ3 import *
+from RegionTypes.RegionType import RegionType
+from testZ3 import run_tests
+from RegionHandler import RegionHandler
 
 if __name__ == '__main__':
-    de_morgans()
-    print()
-    situation_test()
+    # run_tests()
+    regions = [RegionType(), RegionType(), RegionType()]
+    handler = RegionHandler(regions)
+    handler.test_cells([0, 11, 11, 11, 0, 11, 11, 11])
