@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 
 from z3 import *
 
@@ -100,3 +100,46 @@ class RegionHandler:
                     learned.add(i, j)
         self.solver.pop()
         return learned
+
+    def recursive_test(self, cell_limits: List[int]):
+        """
+        Recursively tests a set of cell_limits. Note that if ??a?b?? is input, only the ?'s after the b will be
+        swapped to integers and recursively tested. This is because we eventually get ??a?b?c, and if
+        R(??a?b?c) modified the ? between b and c, it would be repeating something that ??a?b?? alreaady did.
+        :param cell_limits: The limits of each cell.
+        :return: A list containing deductions and more lists. For nonzero indices, the list will store either
+        the recursive output of changing that digit with numbers or None. Since swapping index 0 is swapping cell 0
+        (already known to be nonexistant), we save data by putting this recursive's test into index 0.
+        TODO: Put optimizations in to remove recursive tests if they learn nothing vs their parent.
+        """
+        # Prepare output.
+        out: List[Any] = [None]*self.num_cells
+        # First, test the given set of cells.
+        out[0] = self.test_cells(cell_limits)
+        # Then, perform recursion:
+        # Find the index of the last non-11 element of the list.
+        # For reasons described in the pydoc, we don't want to modify elements before or including that one.
+        # https://stackoverflow.com/a/41346563
+        # Note that this is guaranteed to not throw an error since the standard is for cell_limits[0] to be 0.
+        # so worst-case this will return 0
+        last_index = [idx for idx, elem in enumerate(cell_limits) if elem != 11][-1]
+        # Increment by 1 - last_index now represents the first index we can start modifying the values of.
+        last_index += 1
+        for idx in range(last_index, self.num_cells):
+            # Note that if the recursive_test is all ??s, last_index is 1 here so we start modifying 1
+            # Note that if the last element of recursive_test is not a ??, last_index = self_num_cells
+            # and the range iterates over zero objects
+            # Much more important note: cell_limits[idx] is always a ?.
+            learned = [None]*11
+            for num_mines in range(11):
+                cell_limits[idx] = num_mines
+                learned[num_mines] = self.recursive_test(cell_limits)
+            # Reset back to a ?
+            # This way we don't create and feed a clone of cell_limits into every function
+            cell_limits[idx] = 11
+            # Save the knowledge
+            out[idx] = learned
+
+        return out
+
+
