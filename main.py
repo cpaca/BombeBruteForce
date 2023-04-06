@@ -6,4 +6,4 @@ if __name__ == '__main__':
     # run_tests()
     regions = [RegionType(), RegionType(), RegionType()]
     handler = RegionHandler(regions)
-    handler.test_cells([0, 11, 11, 11, 0, 11, 11, 11])
+    handler.test_cells([0, 11, 11, 11, 1, 11, 11, 11])

@@ -2,6 +2,7 @@ from typing import List
 
 from z3 import *
 
+from Deductions.Deduction import Deduction
 from RegionTypes.RegionType import RegionType
 
 """
@@ -88,12 +89,15 @@ class RegionHandler:
             self.solver.add(self.cells[i] <= cell_limits[i])
         # It may be more efficient to do a binary search instead.
         # I'm not sure. I'm doing it one-at-a-time for now but I'll have to see.
+        learned = Deduction(self.num_cells)
         for i in range(1, len(cell_limits)):
-            results = [None]*11
             for j in range(11):
                 # from 0 to 10
-                results[j] = self.solver.check(self.cells[i] == j)
+                result = self.solver.check(self.cells[i] == j)
                 # If it is SAT, then it is possible to have J mines in cell I
                 # If it is UNSAT, then it is not possible to have J mines in cell I.
-            print(i, results)
+                if result != unsat:
+                    # either sat or unknown, whatever
+                    learned.add(i, j)
+        print(learned)
         self.solver.pop()
