@@ -1,6 +1,9 @@
 class Deduction:
+    """
+    Stores what you've deduced about the current Region set.
+    Tip: Use "None" to store the UNSAT Deduction
+    """
     def __init__(self, size: int):
-        self.unsat = (size < 0)
         self.size = size
         self.known = []
         for i in range(size):
@@ -16,8 +19,6 @@ class Deduction:
         self.known[cell_num].append(mines)
 
     def __str__(self):
-        if self.unsat:
-            return "This region setup is impossible."
         out = ""
         for i in range(1, self.size):
             out += "Cell " + str(i) + " could have " + str(self.known[i]) + " bombs in it.\n"

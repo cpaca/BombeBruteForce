@@ -84,6 +84,8 @@ class RegionHandler:
             if limit == 11:
                 continue  # Let 11 fill in for "?"
             self.solver.add(self.cells[i] <= cell_limits[i])
+        if self.solver.check() == unsat:
+            return None
         # It may be more efficient to do a binary search instead.
         # I'm not sure. I'm doing it one-at-a-time for now but I'll have to see.
         learned = Deduction(self.num_cells)
@@ -96,5 +98,5 @@ class RegionHandler:
                 if result != unsat:
                     # either sat or unknown, whatever
                     learned.add(i, j)
-        print(learned)
         self.solver.pop()
+        return learned
