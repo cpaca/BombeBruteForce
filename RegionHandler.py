@@ -75,6 +75,21 @@ class RegionHandler:
         for i in range(self.size):
             self.solver.add(regions[i].get_expr(self.regions[i]))
 
+    def get_deduction(self):
+        # It may be more efficient to do a binary search instead.
+        # I'm not sure. I'm doing it one-at-a-time for now but I'll have to see.
+        learned = Deduction(self.num_cells)
+        for i in range(1, self.num_cells):
+            for j in range(11):
+                # from 0 to 10
+                result = self.solver.check(self.cells[i] == j)
+                # If it is SAT, then it is possible to have J mines in cell I
+                # If it is UNSAT, then it is not possible to have J mines in cell I.
+                if result != unsat:
+                    # either sat or unknown, whatever
+                    learned.add(i, j)
+        return learned
+
     def test_cells(self, cell_limits: List[int]):
         self.solver.push()
         if len(cell_limits) != self.num_cells:
@@ -86,18 +101,7 @@ class RegionHandler:
             self.solver.add(self.cells[i] <= cell_limits[i])
         if self.solver.check() == unsat:
             return None
-        # It may be more efficient to do a binary search instead.
-        # I'm not sure. I'm doing it one-at-a-time for now but I'll have to see.
-        learned = Deduction(self.num_cells)
-        for i in range(1, len(cell_limits)):
-            for j in range(11):
-                # from 0 to 10
-                result = self.solver.check(self.cells[i] == j)
-                # If it is SAT, then it is possible to have J mines in cell I
-                # If it is UNSAT, then it is not possible to have J mines in cell I.
-                if result != unsat:
-                    # either sat or unknown, whatever
-                    learned.add(i, j)
+        learned = self.get_deduction()
         self.solver.pop()
         return learned
 
