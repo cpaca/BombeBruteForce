@@ -24,7 +24,8 @@ class RegionHandler:
             self.regions[i] = Int(chr(65+i), self.ctx)
 
         # Port of SECT 2 and SECT 3  in testZ3.py
-        self.cells = [None] * (2**self.size)
+        self.num_cells = 2**self.size
+        self.cells = [None] * self.num_cells
         region_sums = self.regions[:]
         for i in range(1, len(self.cells)):
             # range starts at 1 so dont need to skip 0
@@ -49,6 +50,7 @@ class RegionHandler:
                     cell_regions += [loop_num]
                 # Then check the next bit
                 num //= 2
+                loop_num += 1
 
             # Finalize info
             self.cells[i] = Int(name, ctx=self.ctx)
@@ -71,14 +73,27 @@ class RegionHandler:
         # SECT 4
         # TODO: Get this information from RegionType instead of being hardcoded
         # (It's hardcoded for now to make sure this works.)
-        self.solver.add(regions[0] == 1)
-        self.solver.add(regions[1] == 1)
-        self.solver.add(regions[2] == 2)
+        self.solver.add(self.regions[0] == 1)
+        self.solver.add(self.regions[1] == 1)
+        self.solver.add(self.regions[2] == 2)
 
     def test_cells(self, cell_limits: List[int]):
         self.solver.push()
-        if len(cell_limits) != (2**self.size):
+        if len(cell_limits) != self.num_cells:
             raise ArgumentError
+        for i in range(1, self.num_cells):
+            limit = cell_limits[i]
+            if limit == 11:
+                continue  # Let 11 fill in for "?"
+            self.solver.add(self.cells[i] <= cell_limits[i])
+        # It may be more efficient to do a binary search instead.
+        # I'm not sure. I'm doing it one-at-a-time for now but I'll have to see.
         for i in range(1, len(cell_limits)):
-            print(i, cell_limits[i])
+            results = [None]*11
+            for j in range(11):
+                # from 0 to 10
+                results[j] = self.solver.check(self.cells[i] == j)
+                # If it is SAT, then it is possible to have J mines in cell I
+                # If it is UNSAT, then it is not possible to have J mines in cell I.
+            print(i, results)
         self.solver.pop()
