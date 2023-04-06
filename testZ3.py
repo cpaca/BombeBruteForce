@@ -10,6 +10,12 @@ but that doesn't change the fact that this helped me think things through.
 """
 
 
+def run_tests():
+    de_morgans()
+    print()
+    situation_test()
+
+
 def de_morgans():
     # From some searching, it seems a default global Context is used in Z3Py
     # That isn't going to be good when I multithread this in the future so I'll use Context to normalize things.
@@ -64,11 +70,15 @@ def situation_test():
     A = a+ab+ac+abc
     B = ab+b+abc+bc
     C = ac+abc+bc+c
-    :return:
     """
+    # You may see "SECT [X]" commented several times here
+    # In the other files, I might say "consider SECT [X] in testZ3.py"
+    # Referring by line number is extremely dangerous.
+    # SECT 0
     ctx = Context()
     solver = Solver(ctx=ctx)
 
+    # SECT 1
     # I'm observing that I don't feel like typing A = Int("A") for... 3 regions+7 cells
     # I've also already learned a lot from just examining the problem before getting Z3 working
     # So there's a lot of "generalization" going on here.
@@ -77,6 +87,7 @@ def situation_test():
         # 65 is A, 66 is B, etc
         regions[i] = Int(chr(65+i), ctx)
 
+    # SECT 2
     # It's easier to have 0b001 be a, 0b010 be b, 0b011 be c, etc.
     # byproduct is that 0b000 is a NULL cell that isn't in any regions.
     cells = [None]*(2**3)
@@ -96,6 +107,7 @@ def situation_test():
             name += chr(96+3)
         cells[i] = Int(name, ctx)
 
+    # SECT 3
     # Next: Region addition
     # A =   a  + ab  +  ac
     # A = 0b001+0b011+0b101, etc.
@@ -124,6 +136,7 @@ def situation_test():
         solver.add(cell >= 0)
         solver.add(cell <= 10)
 
+    # SECT 4
     # Finally - and this is just for this particular situation -
     # have c = 0, A=1, B=1, C=2
     solver.add(cells[0b100] == 0)
