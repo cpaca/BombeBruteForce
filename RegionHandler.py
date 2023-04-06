@@ -72,11 +72,8 @@ class RegionHandler:
             self.solver.add(s == 0)
 
         # SECT 4
-        # TODO: Get this information from RegionType instead of being hardcoded
-        # (It's hardcoded for now to make sure this works.)
-        self.solver.add(self.regions[0] == 1)
-        self.solver.add(self.regions[1] == 1)
-        self.solver.add(self.regions[2] == 2)
+        for i in range(self.size):
+            self.solver.add(regions[i].get_expr(self.regions[i]))
 
     def test_cells(self, cell_limits: List[int]):
         self.solver.push()
