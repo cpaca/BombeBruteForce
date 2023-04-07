@@ -120,12 +120,11 @@ class RegionHandler:
                 if result != unsat:
                     # either sat or unknown, whatever
                     # save ALL of the information that the model learned.
-                    for idx, cell in enumerate(self.cells):
-                        if idx == 0:
-                            # always dodge the 0 mine
-                            continue
-                        # self.solver.model()[self.cells[1]].as_long()
-                        model = self.solver.model()
+                    model = self.solver.model()
+                    for idx in range(i, self.num_cells):
+                        # lower-bound of idx is i, whose lower-bound is 1
+                        # therefore don't need to do a 0-check
+                        cell = self.cells[idx]
                         mines_in_cell = model[cell].as_long()
                         learned.add(idx, mines_in_cell)
         return learned
