@@ -120,6 +120,8 @@ class RegionHandler:
                 if result != unsat:
                     # either sat or unknown, whatever
                     # save ALL of the information that the model learned.
+                    # In theory we only have to save every 3rd model or so
+                    # In practice, doing that calls check WAY more often so I won't
                     model = self.solver.model()
                     for idx in range(i, self.num_cells):
                         # lower-bound of idx is i, whose lower-bound is 1
