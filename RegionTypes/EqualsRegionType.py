@@ -17,3 +17,6 @@ class EqualsRegionType(RegionType):
 
     def get_expr(self, var: Int):
         return Or([var == val for val in self.vals])
+
+    def get_max_mines(self):
+        return max(self.vals)

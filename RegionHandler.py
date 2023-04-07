@@ -24,6 +24,11 @@ class RegionHandler:
         for i in range(len(self.regions)):
             self.regions[i] = Int(chr(65+i), self.ctx)
 
+        # Code added for optimization reasons
+        # Since we can at least take a guess at the max # of mines in all regions we can guess at the max # of mines
+        self.max_mines = sum([region.get_max_mines() for region in regions])
+        self.max_mines = min(self.max_mines, 99)
+
         # Port of SECT 2 and SECT 3  in testZ3.py
         self.num_cells = 2**self.size
         self.cells = [None] * self.num_cells
@@ -60,7 +65,7 @@ class RegionHandler:
             self.solver.add(self.cells[i] >= 0)
             # The 99 limit is a fill-in for "?" but will hopefully be detected by the strategy
             # and deleted if a stronger restriction comes in.
-            self.solver.add(self.cells[i] <= 99)
+            self.solver.add(self.cells[i] <= self.max_mines)
 
             # Instead of setting region = cell + cell + cell ...
             # Do region - cell - cell - cell ... = 0

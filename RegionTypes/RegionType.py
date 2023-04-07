@@ -18,3 +18,12 @@ class RegionType:
         :return:
         """
         raise NotImplementedError
+
+    def get_max_mines(self):
+        """
+        Returns the maximum possible number of mines in this Region.
+        Used for some optimization stuff.
+        :return: The maximum possible number of mines in this Region, or 99 if theoretically infinitely many mines
+        can be in the region.
+        """
+        raise NotImplementedError
