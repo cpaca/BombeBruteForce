@@ -7,5 +7,5 @@ if __name__ == '__main__':
     regions = [create("1"), create("1"), create("2")]
     handler = RegionHandler(regions)
     # result = handler.test_cells([0, 11, 11, 11, 1, 11, 11, 11])
-    result = handler.recursive_test(5)
+    result = handler.recursive_test(4)
     print("Done")
