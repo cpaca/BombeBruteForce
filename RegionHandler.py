@@ -1,5 +1,6 @@
 from typing import List, Any
 
+import typing
 from z3 import *
 
 from Deductions.Deduction import Deduction
@@ -90,7 +91,12 @@ class RegionHandler:
         for i in range(1, self.num_cells):
             self.get_eq_lookup_table[i] = [self.cells[i] == j for j in range(11)]
 
-    def get_deduction(self):
+    def get_deduction(self, to_check: typing.Union[Deduction, None] = None):
+        """
+        Gets the Deduction for the current set of restrictions.
+        :param to_check: Restricts what regions to check, or doesn't restrict if None.
+        :return: A Deduction of the possible values with these restrictions.
+        """
         if self.solver.check() == unsat:
             # Save time when we already know.
             return None
@@ -99,8 +105,13 @@ class RegionHandler:
         learned = Deduction(self.num_cells)
         for i in range(1, self.num_cells):
             for j in range(11):
+                if to_check is not None:
+                    # There's restrictions, check them
+                    if not to_check.contains(i, j):
+                        # Do NOT check this part.
+                        continue
                 # from 0 to 10
-                result = self.solver.check(self.get_eq_lookup_table[i][j])
+                result = self.solver.check()
                 # If it is SAT, then it is possible to have J mines in cell I
                 # If it is UNSAT, then it is not possible to have J mines in cell I.
                 if result != unsat:
@@ -121,11 +132,12 @@ class RegionHandler:
         self.solver.pop()
         return learned
 
-    def recursive_test(self, start_index: int):
+    def recursive_test(self, start_index: int, to_check: typing.Union[Deduction, None] = None):
         """
         Recursively tests cell limits. Note that this only modifies indices start_index and beyond.
         So if you set start_index to 5, it won't touch indices 1-4.
         :param start_index: The cell to touch first.
+        :param to_check: A restriction on what # of mines to check for each cell. If None, then no restrictions.
         :return: A list containing deductions and more lists. For nonzero indices, the list will store either
         the recursive output of changing that digit with numbers or None. Since swapping index 0 is swapping cell 0
         (already known to be nonexistent), we save data by putting this recursive's test into index 0.
@@ -149,7 +161,7 @@ class RegionHandler:
         # Read the implNote
         # Note that this time we actually use out[0]
         out: List[Any] = [None] * self.num_cells
-        out[0] = self.get_deduction()
+        out[0] = self.get_deduction(to_check)
         if out[0] is None:
             # Save a TON of time on unnecessary checks.
             return out
@@ -164,7 +176,7 @@ class RegionHandler:
                 # Get information and save it:
                 # Note that the recursive starts at idx+1 because we dont want to be touching idx
                 # (we just touched it already)
-                learned[max_mines_in_cell] = self.recursive_test(idx+1)
+                learned[max_mines_in_cell] = self.recursive_test(idx+1, out[0])
                 self.solver.pop()
             # Save the learned information into the output:
             out[idx] = learned
