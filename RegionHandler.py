@@ -76,6 +76,9 @@ class RegionHandler:
             self.solver.add(regions[i].get_expr(self.regions[i]))
 
     def get_deduction(self):
+        if self.solver.check() == unsat:
+            # Save time when we already know.
+            return None
         # It may be more efficient to do a binary search instead.
         # I'm not sure. I'm doing it one-at-a-time for now but I'll have to see.
         learned = Deduction(self.num_cells)
@@ -99,51 +102,58 @@ class RegionHandler:
             if limit == 11:
                 continue  # Let 11 fill in for "?"
             self.solver.add(self.cells[i] <= cell_limits[i])
-        if self.solver.check() == unsat:
-            return None
         learned = self.get_deduction()
         self.solver.pop()
         return learned
 
-    def recursive_test(self, cell_limits: List[int]):
+    def recursive_test(self, start_index: int):
         """
-        Recursively tests a set of cell_limits. Note that if ??a?b?? is input, only the ?'s after the b will be
-        swapped to integers and recursively tested. This is because we eventually get ??a?b?c, and if
-        R(??a?b?c) modified the ? between b and c, it would be repeating something that ??a?b?? alreaady did.
-        :param cell_limits: The limits of each cell.
+        Recursively tests cell limits. Note that this only modifies indices start_index and beyond.
+        So if you set start_index to 5, it won't touch indices 1-4.
+        :param start_index: The cell to touch first.
         :return: A list containing deductions and more lists. For nonzero indices, the list will store either
         the recursive output of changing that digit with numbers or None. Since swapping index 0 is swapping cell 0
-        (already known to be nonexistant), we save data by putting this recursive's test into index 0.
+        (already known to be nonexistent), we save data by putting this recursive's test into index 0.
         TODO: Put optimizations in to remove recursive tests if they learn nothing vs their parent.
         """
-        # Prepare output.
-        out: List[Any] = [None]*self.num_cells
-        # First, test the given set of cells.
-        out[0] = self.test_cells(cell_limits)
-        # Then, perform recursion:
-        # Find the index of the last non-11 element of the list.
-        # For reasons described in the pydoc, we don't want to modify elements before or including that one.
-        # https://stackoverflow.com/a/41346563
-        # Note that this is guaranteed to not throw an error since the standard is for cell_limits[0] to be 0.
-        # so worst-case this will return 0
-        last_index = [idx for idx, elem in enumerate(cell_limits) if elem != 11][-1]
-        # Increment by 1 - last_index now represents the first index we can start modifying the values of.
-        last_index += 1
-        for idx in range(last_index, self.num_cells):
-            # Note that if the recursive_test is all ??s, last_index is 1 here so we start modifying 1
-            # Note that if the last element of recursive_test is not a ??, last_index = self_num_cells
-            # and the range iterates over zero objects
-            # Much more important note: cell_limits[idx] is always a ?.
-            learned = [None]*11
-            for num_mines in range(11):
-                cell_limits[idx] = num_mines
-                learned[num_mines] = self.recursive_test(cell_limits)
-            # Reset back to a ?
-            # This way we don't create and feed a clone of cell_limits into every function
-            cell_limits[idx] = 11
-            # Save the knowledge
+        """
+        Implementation note - gets its own block comment because this is LONG.
+        This note is done assuming two regions, but should be expandable to any number of regions.
+        For two regions, the cell array has four elements. Therefore, this should return a list of 4 elements.
+        Ignore index 0 for a bit. Index 1 - aka out[1] - will contain the information as a result of changing out[1].
+        Note that out[1] should be a list: out[1][0] will be what happens if the first cell is limited to 0
+        And out[1][1] will be what happens if the first cell is limited to 1
+        etc.
+        Because of the recursion, out[1][1] should be a recursive result. 
+        (All of this out[1] stuff is assuming start_index=1; if start_index=2 or more then we shouldn't even touch
+        cell #1 and out[1] = None)
+        But what if we want to set index 1 to a "?"? Then we manipulate out[1], treat it "as a ?", and set out[2]
+        This continues on until the very end - what if we want EVERYTHING to be a ?. 
+        Good thing we kept the out[0] available! The information in out[0] will be "What if it was ALL ?s."
+        """
+        # Read the implNote
+        # Note that this time we actually use out[0]
+        out: List[Any] = [None] * self.num_cells
+        out[0] = self.get_deduction()
+        if out[0] is None:
+            # Save a TON of time on unnecessary checks.
+            return out
+        # Now manipulate each index
+        for idx in range(start_index, self.num_cells):
+            # Note that if, somehow, start_index >= self.num_cells, this does nothing and the function will return.
+            learned: List[Any] = [None]*11  # 1 for each number from 0-10
+            for max_mines_in_cell in range(11):
+                # Since we'll want to be able to undo this, have push/pop ready
+                self.solver.push()
+                self.solver.add(self.cells[idx] <= max_mines_in_cell)
+                # Get information and save it:
+                # Note that the recursive starts at idx+1 because we dont want to be touching idx
+                # (we just touched it already)
+                learned[max_mines_in_cell] = self.recursive_test(idx+1)
+                self.solver.pop()
+            # Save the learned information into the output:
             out[idx] = learned
-
         return out
+
 
 
