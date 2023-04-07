@@ -16,7 +16,8 @@ class Deduction:
         Not necessarily that it DOES. (Although if it's the only case, then yes, it does have that many mines in it)
         But that it COULD.
         """
-        self.known[cell_num].append(mines)
+        if not self.contains(cell_num, mines):
+            self.known[cell_num].append(mines)
 
     def __str__(self):
         out = ""

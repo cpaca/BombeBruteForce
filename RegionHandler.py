@@ -110,13 +110,24 @@ class RegionHandler:
                     if not to_check.contains(i, j):
                         # Do NOT check this part.
                         continue
+                if learned.contains(i, j):
+                    # Could've learned it from a previous model.
+                    continue
                 # from 0 to 10
                 result = self.solver.check()
                 # If it is SAT, then it is possible to have J mines in cell I
                 # If it is UNSAT, then it is not possible to have J mines in cell I.
                 if result != unsat:
                     # either sat or unknown, whatever
-                    learned.add(i, j)
+                    # save ALL of the information that the model learned.
+                    for idx, cell in enumerate(self.cells):
+                        if idx == 0:
+                            # always dodge the 0 mine
+                            continue
+                        # self.solver.model()[self.cells[1]].as_long()
+                        model = self.solver.model()
+                        mines_in_cell = model[cell].as_long()
+                        learned.add(idx, mines_in_cell)
         return learned
 
     def test_cells(self, cell_limits: List[int]):
