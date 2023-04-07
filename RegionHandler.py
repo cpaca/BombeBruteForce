@@ -104,12 +104,12 @@ class RegionHandler:
         # I'm not sure. I'm doing it one-at-a-time for now but I'll have to see.
         learned = Deduction(self.num_cells)
         for i in range(1, self.num_cells):
-            for j in range(11):
-                if to_check is not None:
-                    # There's restrictions, check them
-                    if not to_check.contains(i, j):
-                        # Do NOT check this part.
-                        continue
+            if to_check is None:
+                mines_to_check = range(11)
+            else:
+                mines_to_check = to_check.known[i]
+
+            for j in mines_to_check:
                 if learned.contains(i, j):
                     # Could've learned it from a previous model.
                     continue
