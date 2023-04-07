@@ -75,6 +75,16 @@ class RegionHandler:
         for i in range(self.size):
             self.solver.add(regions[i].get_expr(self.regions[i]))
 
+        # See comments in get_deduction
+        # But basically, get_deduction was calling self.cells[i] == j so much that it took about 40% of the CPU time
+        # so I had the idea of just making a lookup table for it!
+        # table[i][j] is equivalent to self.cells[i] == j
+        # Hopefully this isn't THAT unreadable.
+        # Contemplating if either the compiler or Python is smart enough to convert this into straight C code...
+        self.get_eq_lookup_table: List[Any] = [None]*self.num_cells
+        for i in range(1, self.num_cells):
+            self.get_eq_lookup_table[i] = [self.cells[i] == j for j in range(11)]
+
     def get_deduction(self):
         if self.solver.check() == unsat:
             # Save time when we already know.
@@ -85,7 +95,7 @@ class RegionHandler:
         for i in range(1, self.num_cells):
             for j in range(11):
                 # from 0 to 10
-                result = self.solver.check(self.cells[i] == j)
+                result = self.solver.check(self.get_eq_lookup_table[i][j])
                 # If it is SAT, then it is possible to have J mines in cell I
                 # If it is UNSAT, then it is not possible to have J mines in cell I.
                 if result != unsat:
