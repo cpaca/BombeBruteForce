@@ -154,4 +154,4 @@ cython_debug/
 # Note:
 # This gitignore is a Python gitignore because this was originally a Python project
 # But then I needed to rewrite the whole thing in C so I just added the necessary C files below
-cmake-build-debug
+cmake-build*
