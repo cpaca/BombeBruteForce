@@ -3,8 +3,8 @@ from typing import List, Any
 import typing
 from z3 import *
 
-from Deductions.Deduction import Deduction
-from RegionTypes.RegionType import RegionType
+from py_code.Deductions.Deduction import Deduction
+from py_code.RegionTypes.RegionType import RegionType
 
 """
 RegionHandler class.

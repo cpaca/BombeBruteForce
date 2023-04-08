@@ -1,4 +1,4 @@
-from RegionTypes.EqualsRegionType import EqualsRegionType
+from py_code.RegionTypes.EqualsRegionType import EqualsRegionType
 
 
 # This is in a different file to everything else because putting it in RegionType.py makes a circular import loop

@@ -1,6 +1,5 @@
-from RegionTypes.RegionTypeMaker import create
-from testZ3 import run_tests
-from RegionHandler import RegionHandler
+from py_code.RegionTypes.RegionTypeMaker import create
+from py_code.RegionHandler import RegionHandler
 
 if __name__ == '__main__':
     # run_tests()

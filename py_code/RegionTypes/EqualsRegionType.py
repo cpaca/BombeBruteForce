@@ -2,7 +2,7 @@ from typing import List
 
 from z3 import *
 
-from RegionTypes.RegionType import RegionType
+from py_code.RegionTypes.RegionType import RegionType
 
 
 class EqualsRegionType(RegionType):
