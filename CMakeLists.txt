@@ -1,30 +1,13 @@
 ################################################################################
 # Lots of this CMakeLists.txt was taken from one of the following files.
-# Z3Prover CMakeLists Tutorial
 # Z3 C++ Example Project: https://github.com/Z3Prover/z3/tree/master/examples/c%2B%2B
 ################################################################################
 cmake_minimum_required(VERSION 3.16)
 project(BombeBruteForce)
 
-include(FetchContent)
-
-# Taken from the Z3Prover CMakeLists Tutorial
-# Handles the "get and build z3" mess for you.
-# FetchContent_Declare(z3 GIT_REPOSITORY https://github.com/Z3Prover/z3 GIT_TAG z3-4.12.1)
-# FetchContent_MakeAvailable(z3)
-
-# Solution suggested by StackOverflow
-# StackOverflow link here: https://stackoverflow.com/questions/47135973/error-export-ordinal-too-large-104116
-# set(BUILD_SHARED_LIBS OFF)
-# Solution suggested by ChatGPT.
-# set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}/INCREMENTAL:NO")
-
-# File location found because I searched through the Z3 files (and Google) so much that I found this file.
-# (more accurately I found the file in Z3-src, which led me to the file in Z3-build/cmake, and I eventually
-# found the Z3-build/Z3Config.cmake file from more searching)
-# set(Z3_DIR ${CMAKE_CURRENT_BINARY_DIR}/_deps/z3-build)
 message("Root Directory: ${CMAKE_CURRENT_BINARY_DIR}")
 message("Z3 Directory: ${Z3_DIR}")
+message("The above two messages provided because it's possible you, like I, gave it the windows filename (C:\) but it wants the linux filename (mnt/c/)")
 # Taken from the Z3 C++ Example Project
 find_package(Z3 REQUIRED CONFIG)
 
