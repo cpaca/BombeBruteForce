@@ -1,5 +1,5 @@
 //
-// Created by cppac on 4/8/2023.
+// Created on 4/8/2023.
 //
 
 #ifndef BOMBEBRUTEFORCE_EQUALSREGIONTYPE_H
@@ -8,7 +8,7 @@
 
 #include "RegionType.h"
 
-class EqualsRegionType : RegionType{
+class EqualsRegionType : public RegionType{
 public:
     /**
      * Same as EqualsRegionType(&validCount, 1)
@@ -24,8 +24,8 @@ public:
      * @param arrSize The size of the validCounts array.
      */
     EqualsRegionType(const int validCounts[], size_t arrSize);
-    ~EqualsRegionType();
 
+    ~EqualsRegionType();
     EqualsRegionType operator=(const EqualsRegionType& oth) = delete;
     EqualsRegionType(EqualsRegionType& oth) = delete;
 

@@ -23,6 +23,8 @@ public:
      * Used for certain optimizations, but as a side-effect will never let a region have more than 99 mines.
      */
     virtual int getMaxMines();
+
+    virtual ~RegionType(){};
 };
 
 

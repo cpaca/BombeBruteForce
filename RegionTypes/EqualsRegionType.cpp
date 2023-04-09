@@ -1,5 +1,5 @@
 //
-// Created by cppac on 4/8/2023.
+// Created on 4/8/2023.
 //
 
 #include "EqualsRegionType.h"
