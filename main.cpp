@@ -2,6 +2,9 @@
 #include <sstream>
 #include<vector>
 #include"z3++.h"
+#include "RegionTypes/RegionType.h"
+#include "RegionTypes/EqualsRegionType.h"
+#include "RegionManager.h"
 
 using namespace z3;
 
@@ -36,7 +39,23 @@ void demorgan() {
 int main() {
     std::cout << "Hello, World!" << std::endl;
 
-    demorgan();
+    // demorgan();
+
+    auto types = new RegionType*[3];
+    types[0] = new EqualsRegionType(1);
+    types[1] = new EqualsRegionType(1);
+    types[2] = new EqualsRegionType(2);
+
+    RegionManager manager(types, 3);
+
+    int* limits = new int[8] {0, 11, 11, 11, 0, 11, 11, 11};
+    manager.test(limits);
+    delete[] limits;
+
+    for(size_t i = 0; i < 3; i++){
+        delete types[i];
+    }
+    delete[] types;
 
     return 0;
 }
