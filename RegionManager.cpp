@@ -9,7 +9,14 @@
 using namespace z3;
 
 RegionManager::RegionManager(RegionType** regionTypes, size_t numRegions) :
-    solver(ctx), size(numRegions), numCells(1 << size) {
+    solver(ctx),
+    size(numRegions),
+    numCells(1 << size) {
+    // Heads-up, valgrind will lie and say that the above line, the one that says numCells(1<<size) is leaking memory
+    // It's not.
+    // solver(ctx) is the one leaking memory.
+    // With my current execution, Z3 is leaking about 305 kilobytes of memory.
+
     // SECT [n] referrs to things in testZ3.py and RegionHandler.py
     // note that those are .py so they're in the py_code folder
 
@@ -111,7 +118,9 @@ RegionManager::RegionManager(RegionType** regionTypes, size_t numRegions) :
 }
 
 RegionManager::~RegionManager() {
-    // TODO: Valgrind this to check if this properly deletes everything.
+    // Valgrind will say there's memory leaks.
+    // Ignore them, z3++.h and z3::solver solver(ctx) are the ones doing the leaking.
+    // Currently, valgrind measures about 304,568 bytes leaked.
     for(size_t i = 0; i < size; i++){
         delete regions[i];
     }
