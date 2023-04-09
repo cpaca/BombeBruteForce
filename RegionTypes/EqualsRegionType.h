@@ -25,7 +25,7 @@ public:
      */
     EqualsRegionType(const int validCounts[], size_t arrSize);
 
-    ~EqualsRegionType();
+    ~EqualsRegionType() override;
     EqualsRegionType operator=(const EqualsRegionType& oth) = delete;
     EqualsRegionType(EqualsRegionType& oth) = delete;
 

@@ -24,7 +24,7 @@ public:
      */
     virtual int getMaxMines();
 
-    virtual ~RegionType(){};
+    virtual ~RegionType()= default;
 };
 
 
