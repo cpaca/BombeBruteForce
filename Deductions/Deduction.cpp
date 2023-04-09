@@ -3,6 +3,7 @@
 //
 
 #include <sstream>
+#include <iostream>
 #include "Deduction.h"
 
 Deduction::Deduction(size_t numCells) : Deduction(numCells, false) {
@@ -29,7 +30,21 @@ Deduction::~Deduction() {
     delete[] cellStates;
 }
 
-bool Deduction::get(size_t cell, size_t mines) {
+Deduction::Deduction(const Deduction &oth) :
+    numCells(oth.numCells) {
+
+    cellStates = new bool*[numCells];
+    cellStates[0] = nullptr; // No data for the 0 cell
+    for(int i = 1; i < numCells; i++){
+        bool* cell = new bool[11];
+        for(int j = 0; j < 11; j++){
+            cell[j] = oth.get(i,j);
+        }
+        cellStates[i] = cell;
+    }
+}
+
+bool Deduction::get(size_t cell, size_t mines) const {
     return cellStates[cell][mines];
 }
 
@@ -37,7 +52,7 @@ void Deduction::set(size_t cell, size_t mines, bool state) {
     cellStates[cell][mines] = state;
 }
 
-std::string Deduction::toLongStr() {
+std::string Deduction::toLongStr() const {
     std::stringstream out;
 
     for(int i = 1; i < numCells; i++){

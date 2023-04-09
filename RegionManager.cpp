@@ -146,10 +146,30 @@ void RegionManager::test(int *cellLimits) {
     if(solver.check() == unsat){
         std::cout << "Test output is UNSAT\n";
     }
-    Deduction data(numCells, true);
+    Deduction data = getDeduction();
+    std::cout << data.toLongStr();
+
+    solver.pop();
+}
+
+Deduction RegionManager::getDeduction() {
+    Deduction out(numCells, true);
+    return getDeduction(out);
+}
+
+Deduction RegionManager::getDeduction(const Deduction &oth) {
+    Deduction data(oth);
+
     for(size_t cellNum = 1; cellNum < numCells; cellNum++){
         auto cell = *cells[cellNum];
+
         for(int numMines = 0; numMines < 11; numMines++){
+            if(!data.get(cellNum, numMines)){
+                // Super-deduction knows that this isn't true
+                // So it can't be true here, either.
+                continue;
+            }
+
             auto assumption = cell == numMines;
             auto result = solver.check(1, &assumption);
             // If result is UNSAT then it is not possible for cell to have numMines mines
@@ -161,7 +181,5 @@ void RegionManager::test(int *cellLimits) {
             }
         }
     }
-    std::cout << data.toLongStr();
-
-    solver.pop();
+    return data;
 }

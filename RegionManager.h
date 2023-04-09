@@ -7,6 +7,7 @@
 
 
 #include "RegionTypes/RegionType.h"
+#include "Deductions/Deduction.h"
 
 class RegionManager {
 public:
@@ -30,6 +31,19 @@ private:
      * This is because index 0 would be represented by the cell not covered by ANY region
      */
     size_t numCells;
+
+    /**
+     * Calculates the information available with the system loaded into the solver.
+     * @return A deduction with all of the known information.
+     */
+    Deduction getDeduction();
+    /**
+     * Calculates the information available with the system loaded into the solver.
+     * Note: Will only consider values which are "true" in the deduction.
+     * @param oth The deduction to "trim down"
+     * @return A deduction with all information true in the input deduction and true in this system.
+     */
+    Deduction getDeduction(const Deduction& oth);
 };
 
 

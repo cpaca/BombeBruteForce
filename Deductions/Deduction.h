@@ -26,9 +26,9 @@ public:
 
     ~Deduction();
     Deduction operator=(const Deduction& oth) = delete;
-    Deduction(Deduction& oth) = delete;
+    Deduction(const Deduction& oth);
 
-    bool get(size_t cell, size_t mines);
+    bool get(size_t cell, size_t mines) const;
     void set(size_t cell, size_t mines, bool state);
 
     /**
@@ -37,7 +37,7 @@ public:
      * but good for user-readability
      * @return This deduction as a string.
      */
-    std::string toLongStr();
+    std::string toLongStr() const;
 private:
     // Whether Cell C has N mines is a bool
     // So each item of N mines in each cell C is a bool
