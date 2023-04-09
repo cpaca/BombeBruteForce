@@ -48,7 +48,7 @@ int main() {
 
     RegionManager manager(types, 3);
 
-    int* limits = new int[8] {0, 11, 11, 11, 0, 11, 11, 11};
+    int* limits = new int[8] {0, 11, 11, 11, 1, 11, 11, 11};
     manager.test(limits);
     delete[] limits;
 

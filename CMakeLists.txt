@@ -21,7 +21,7 @@ message(STATUS "Found Z3 ${Z3_VERSION_STRING}")
 message(STATUS "Z3_DIR: ${Z3_DIR}")
 
 add_executable(BombeBruteForce main.cpp RegionTypes/RegionType.cpp RegionTypes/RegionType.h
-        RegionTypes/EqualsRegionType.cpp RegionTypes/EqualsRegionType.h RegionManager.cpp RegionManager.h)
+        RegionTypes/EqualsRegionType.cpp RegionTypes/EqualsRegionType.h RegionManager.cpp RegionManager.h Deductions/Deduction.cpp Deductions/Deduction.h)
 # Taken from the Z3 C++ Example Project
 target_include_directories(BombeBruteForce PRIVATE ${Z3_CXX_INCLUDE_DIRS})
 target_link_libraries(BombeBruteForce PRIVATE ${Z3_LIBRARIES})

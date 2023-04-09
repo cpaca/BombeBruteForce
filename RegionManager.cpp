@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iostream>
 #include "RegionManager.h"
+#include "Deductions/Deduction.h"
 
 using namespace z3;
 
@@ -145,8 +146,8 @@ void RegionManager::test(int *cellLimits) {
     if(solver.check() == unsat){
         std::cout << "Test output is UNSAT\n";
     }
+    Deduction data(numCells, true);
     for(size_t cellNum = 1; cellNum < numCells; cellNum++){
-        std::vector<int> vals;
         auto cell = *cells[cellNum];
         for(int numMines = 0; numMines < 11; numMines++){
             auto assumption = cell == numMines;
@@ -154,16 +155,13 @@ void RegionManager::test(int *cellLimits) {
             // If result is UNSAT then it is not possible for cell to have numMines mines
             // If result is NOT UNSAT then it is NOT (not possible for cell to have numMines mines)
             // If result is NOT UNSAT then it is possible for cell to have numMines mines
-            if(result != unsat){
-                vals.push_back(numMines);
+            if(result == unsat){
+                // If result is UNSAT then it is not possible for cell to have numMines mines
+                data.set(cellNum, numMines, false);
             }
         }
-        std::cout << "Possible mine values for cell " << cell << ": [";
-        for(int i : vals){
-            std::cout << i << ", ";
-        }
-        std::cout << "]" << std::endl;
     }
+    std::cout << data.toLongStr();
 
     solver.pop();
 }
