@@ -38,6 +38,14 @@ public:
      * @return This deduction as a string.
      */
     std::string toLongStr() const;
+
+    /**
+     * Basically the same as asking if every possible value of get() will return false
+     * If isUnsat(), then get(c, m) will always return false
+     * If not isUnsat(), then get(c, m) will return true for at least one input value
+     * @return Whether or not this deduction can be considered "UNSAT"
+     */
+    bool isUnsat() const;
 private:
     // Whether Cell C has N mines is a bool
     // So each item of N mines in each cell C is a bool
