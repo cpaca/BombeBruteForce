@@ -57,7 +57,7 @@ std::string DeductionManager::toLongStr(const std::string &pre, const Deduction 
             auto limitData = cell[limit];
             if(limitData != nullptr) {
                 out << pre << " Information if limit <= " << limit << "\n";
-                out << limitData->toLongStr(pre + "  ", self);
+                out << limitData->toLongStr(pre + " " + " ", self);
                 out << pre << " End of information if limit <= " << limit << "\n";
             }
         }
