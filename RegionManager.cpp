@@ -84,8 +84,6 @@ RegionManager::RegionManager(RegionType** regionTypes, size_t numRegions) :
         while(bits > 0){
             if(bits%2 == 1){
                 expr region = *regionSums[regionNum];
-                std::cout << region << std::endl;
-                std::cout << cell << std::endl;
                 region = region - cell;
                 regionSums[regionNum][0] = region;
             }
