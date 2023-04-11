@@ -61,10 +61,6 @@ std::string DeductionManager::toLongStr(const std::string &pre, const Deduction 
         printed = true;
     }
     for(int cellNum = 1; cellNum < numCells; cellNum++){
-        if(cellNum == 7 && pre.empty()){
-            out << "Flag!\n";
-        }
-
         auto cell = children[cellNum];
         std::stringstream cellOut; // haha, pronounced "sellout"
         bool cellHasData = false;
@@ -92,6 +88,8 @@ std::string DeductionManager::toLongStr(const std::string &pre, const Deduction 
                 // Had to define the operator= for this.
                 last = limitData->self;
             }
+            // Of course, if [1] mine is possible right now on this cell, it won't be possible next time.
+            last.set(cellNum, limit, false);
         }
         cellOut << pre << "End of information for cell " << cellNum << std::endl;
 
