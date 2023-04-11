@@ -52,16 +52,24 @@ std::string DeductionManager::toLongStr(const std::string &pre, const Deduction 
     out << "End of self result\n";
     for(int cellNum = 0; cellNum < numCells; cellNum++){
         auto cell = children[cellNum];
-        out << pre << "Information for cell " << cellNum << ": \n";
+        std::stringstream cellOut; // haha, pronounced "sellout"
+        bool cellHasData = false;
+
+        cellOut << pre << "Information for cell " << cellNum << ": \n";
         for(int limit = 0; limit < 11; limit++){
             auto limitData = cell[limit];
             if(limitData != nullptr) {
-                out << pre << " Information if limit <= " << limit << "\n";
-                out << limitData->toLongStr(pre + " " + " ", self);
-                out << pre << " End of information if limit <= " << limit << "\n";
+                cellOut << pre << " Information if limit <= " << limit << "\n";
+                cellOut << limitData->toLongStr(pre + " " + " ", self);
+                cellOut << pre << " End of information if limit <= " << limit << "\n";
+                cellHasData = true;
             }
         }
-        out << pre << "End of information for cell " << cellNum << std::endl;
+        cellOut << pre << "End of information for cell " << cellNum << std::endl;
+        
+        if(cellHasData){
+            out << cellOut.str();
+        }
     }
     return out.str();
 }
