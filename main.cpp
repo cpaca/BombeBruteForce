@@ -49,7 +49,10 @@ int main() {
     RegionManager manager(types, 3);
 
     int* limits = new int[8] {0, 11, 11, 11, 1, 11, 11, 11};
-    manager.test(limits);
+    manager.restrict(limits);
+
+    auto results = manager.recursive_test();
+    std::cout << results->toLongStr();
     delete[] limits;
 
     for(size_t i = 0; i < 3; i++){

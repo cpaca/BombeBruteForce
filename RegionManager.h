@@ -8,6 +8,7 @@
 
 #include "RegionTypes/RegionType.h"
 #include "Deductions/Deduction.h"
+#include "Deductions/DeductionManager.h"
 
 class RegionManager {
 public:
@@ -26,6 +27,8 @@ public:
     // More or less used for debugging stuff out.
     // Treats 11s as ?s.
     void restrict(int* cellLimits);
+
+    DeductionManager* recursive_test();
 private:
     z3::context ctx;
     z3::solver solver;

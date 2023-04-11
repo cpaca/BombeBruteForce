@@ -17,11 +17,14 @@ public:
     DeductionManager(const DeductionManager& oth) = delete;
 
     void set(int cell, int mines, const Deduction& d);
+    void set(int cell, int mines, DeductionManager* d);
 
     /**
      * Equivalent to repeated callings of self.toLongStr()
      * With extra notes about "this is cell 1", "this is cell 2",
      * and notes about "this is if cell <= k"
+     *
+     * Note: This function is recursive. And Clang-tidy keeps complaining about it.
      */
     std::string toLongStr(const std::string& pre, const Deduction& parent) const;
     std::string toLongStr() const;

@@ -156,6 +156,13 @@ void RegionManager::restrict(int *cellLimits) {
     }
 }
 
+DeductionManager* RegionManager::recursive_test() {
+    Deduction self = getDeduction();
+    auto* out = new DeductionManager(self);
+
+    return out;
+}
+
 Deduction RegionManager::getDeduction() {
     Deduction out(numCells, true);
     return getDeduction(out);

@@ -44,13 +44,18 @@ void DeductionManager::set(int cell, int mines, const Deduction& d) {
     children[cell][mines] = new DeductionManager(d);
 }
 
+void DeductionManager::set(int cell, int mines, DeductionManager* d){
+    // don't even run checks just override the existing DeductionManager.
+    children[cell][mines] = d;
+}
+
 std::string DeductionManager::toLongStr(const std::string &pre, const Deduction &parent) const {
     std::stringstream out;
     out << pre;
     out << "Self result:\n";
     out << self.toLongStr(pre + " ", parent);
     out << "End of self result" << std::endl;
-    for(int cellNum = 0; cellNum < numCells; cellNum++){
+    for(int cellNum = 1; cellNum < numCells; cellNum++){
         auto cell = children[cellNum];
         std::stringstream cellOut; // haha, pronounced "sellout"
         bool cellHasData = false;
