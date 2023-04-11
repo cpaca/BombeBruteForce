@@ -51,7 +51,7 @@ int main() {
     int* limits = new int[8] {0, 11, 11, 11, 1, 11, 11, 11};
     manager.restrict(limits);
 
-    auto results = manager.recursive_test();
+    auto results = manager.recursive_test(7);
     std::cout << results->toLongStr();
     delete[] limits;
 

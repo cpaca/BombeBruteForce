@@ -156,10 +156,25 @@ void RegionManager::restrict(int *cellLimits) {
     }
 }
 
-DeductionManager* RegionManager::recursive_test() {
+DeductionManager* RegionManager::recursive_test(int index) { // NOLINT(misc-no-recursion)
     Deduction self = getDeduction();
     auto* out = new DeductionManager(self);
+    for(int cellNum = index; cellNum < numCells; cellNum++){
+        auto cell = *cells[cellNum];
+        solver.push();
+        for(int limit = 10; limit >= 0; limit--){
+            // By going from 10 to 0 instead of 0 to 11 (or i guess 10)
+            // we don't need to call push and pop nearly as much
+            // though I need to experiment with how much CPU time this saves since now the z3 solver has to
+            // figure it out (though i don't doubt that their internals can do it faster than I can)
+            solver.add(cell <= limit);
 
+            // cellNum + 1 because we don't want to manipulate cellNum twice.
+            DeductionManager* recursiveOut = recursive_test(cellNum + 1);
+            out->set(cellNum, limit, recursiveOut);
+        }
+        solver.pop();
+    }
     return out;
 }
 

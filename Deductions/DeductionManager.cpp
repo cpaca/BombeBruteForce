@@ -49,12 +49,11 @@ void DeductionManager::set(int cell, int mines, DeductionManager* d){
     children[cell][mines] = d;
 }
 
-std::string DeductionManager::toLongStr(const std::string &pre, const Deduction &parent) const {
+std::string DeductionManager::toLongStr(const std::string &pre, const Deduction &parent) const { // NOLINT(misc-no-recursion)
     std::stringstream out;
-    out << pre;
-    out << "Self result:\n";
+    out << pre << "Self result:\n";
     out << self.toLongStr(pre + " ", parent);
-    out << "End of self result" << std::endl;
+    out << pre << "End of self result" << std::endl;
     for(int cellNum = 1; cellNum < numCells; cellNum++){
         auto cell = children[cellNum];
         std::stringstream cellOut; // haha, pronounced "sellout"

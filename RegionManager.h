@@ -28,7 +28,12 @@ public:
     // Treats 11s as ?s.
     void restrict(int* cellLimits);
 
-    DeductionManager* recursive_test();
+    /**
+     * Equivalent (but faster than) recursive test(), applying limits to position [index] and beyond.
+     * At index = numCells, simply returns a DeductionManager* with only Deductions in it.
+     * @param index The first index to start manipulating.
+     */
+    DeductionManager* recursive_test(int index);
 private:
     z3::context ctx;
     z3::solver solver;
