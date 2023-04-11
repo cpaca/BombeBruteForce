@@ -135,10 +135,7 @@ RegionManager::~RegionManager() {
 
 void RegionManager::test(int *cellLimits) {
     solver.push();
-    for(size_t i = 1; i < numCells; i++){
-        auto cell = *cells[i];
-        solver.add(cell <= cellLimits[i]);
-    }
+    restrict(cellLimits);
     std::cout << "Solver state:\n";
     std::cout << solver << "\n";
     std::cout << "SMT2 solver state:\n";
@@ -150,6 +147,13 @@ void RegionManager::test(int *cellLimits) {
     std::cout << data.toLongStr();
 
     solver.pop();
+}
+
+void RegionManager::restrict(int *cellLimits) {
+    for(size_t i = 1; i < numCells; i++){
+        auto cell = *cells[i];
+        solver.add(cell <= cellLimits[i]);
+    }
 }
 
 Deduction RegionManager::getDeduction() {

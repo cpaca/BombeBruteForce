@@ -19,7 +19,13 @@ public:
 
     // Returns "void" for now so I can just print the output and see what I get
     // but in the future I'll need to port the Deduction class.
+    // Equivalent to restrict(cellLimits), printing some debug stuff, then printing getDeduction().toLongStr()
     void test(int* cellLimits);
+
+    // Applies certain limits to the solver
+    // More or less used for debugging stuff out.
+    // Treats 11s as ?s.
+    void restrict(int* cellLimits);
 private:
     z3::context ctx;
     z3::solver solver;

@@ -66,7 +66,7 @@ std::string DeductionManager::toLongStr(const std::string &pre, const Deduction 
             }
         }
         cellOut << pre << "End of information for cell " << cellNum << std::endl;
-        
+
         if(cellHasData){
             out << cellOut.str();
         }
