@@ -51,9 +51,15 @@ void DeductionManager::set(int cell, int mines, DeductionManager* d){
 
 std::string DeductionManager::toLongStr(const std::string &pre, const Deduction &parent) const { // NOLINT(misc-no-recursion)
     std::stringstream out;
-    out << pre << "Self result:\n";
-    out << self.toLongStr(pre + " ", parent);
-    out << pre << "End of self result" << std::endl;
+    bool printed = false;
+
+    auto selfData = self.toLongStr(pre + " ", parent);
+    if(!selfData.empty()){
+        out << pre << "Self result:\n";
+        out << selfData;
+        out << pre << "End of self result" << std::endl;
+        printed = true;
+    }
     for(int cellNum = 1; cellNum < numCells; cellNum++){
         auto cell = children[cellNum];
         std::stringstream cellOut; // haha, pronounced "sellout"
@@ -63,15 +69,22 @@ std::string DeductionManager::toLongStr(const std::string &pre, const Deduction 
         for(int limit = 0; limit < 11; limit++){
             auto limitData = cell[limit];
             if(limitData != nullptr) {
-                cellOut << pre << " Information if limit <= " << limit << "\n";
-                cellOut << limitData->toLongStr(pre + " " + " ", self);
-                cellOut << pre << " End of information if limit <= " << limit << "\n";
-                cellHasData = true;
+                auto limitDataStr = limitData->toLongStr(pre + " " + " ", self);
+                if(!limitDataStr.empty()) {
+                    cellOut << pre << " Information if limit <= " << limit << "\n";
+                    cellOut << limitDataStr;
+                    cellOut << pre << " End of information if limit <= " << limit << "\n";
+                    cellHasData = true;
+                }
             }
         }
         cellOut << pre << "End of information for cell " << cellNum << std::endl;
 
         if(cellHasData){
+            if(!printed){
+                out << "Self has no special data.";
+                printed = true;
+            }
             out << cellOut.str();
         }
     }
