@@ -61,28 +61,43 @@ std::string DeductionManager::toLongStr(const std::string &pre, const Deduction 
         printed = true;
     }
     for(int cellNum = 1; cellNum < numCells; cellNum++){
+        if(cellNum == 7 && pre.empty()){
+            out << "Flag!\n";
+        }
+
         auto cell = children[cellNum];
         std::stringstream cellOut; // haha, pronounced "sellout"
         bool cellHasData = false;
 
         cellOut << pre << "Information for cell " << cellNum << ": \n";
-        for(int limit = 0; limit < 11; limit++){
+
+        // Optimization note:
+        // Anything that would be true if limit <= 10 will also be true if limit <= 9
+        // and etc. if limit <= 8, 7, 6
+        // so this can cut down on *some* string stuff.
+        auto last = self;
+
+        // of course if we're doing it like that we need to go from 10 to 0 instead of 0 to 10
+        for(int limit = 10; limit >= 0; limit--){
             auto limitData = cell[limit];
             if(limitData != nullptr) {
-                auto limitDataStr = limitData->toLongStr(pre + " " + " ", self);
+                // There is data here. (If it was nullptr that would mean there's no data here)
+                auto limitDataStr = limitData->toLongStr(pre + " " + " ", last);
                 if(!limitDataStr.empty()) {
                     cellOut << pre << " Information if limit <= " << limit << "\n";
                     cellOut << limitDataStr;
                     cellOut << pre << " End of information if limit <= " << limit << "\n";
                     cellHasData = true;
                 }
+                // Had to define the operator= for this.
+                last = limitData->self;
             }
         }
         cellOut << pre << "End of information for cell " << cellNum << std::endl;
 
         if(cellHasData){
             if(!printed){
-                out << pre << "Self has no special data.";
+                out << pre << "Self has no special data.\n";
                 printed = true;
             }
             out << cellOut.str();

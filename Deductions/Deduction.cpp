@@ -30,6 +30,21 @@ Deduction::~Deduction() {
     delete[] cellStates;
 }
 
+Deduction& Deduction::operator=(const Deduction &rhs) {
+    if(&rhs == this){
+        return *this;
+    }
+    if(numCells != rhs.numCells){
+        throw std::invalid_argument("RHS of operator= doesn't have the same number of cells.");
+    }
+    for(int cellNum = 1; cellNum < numCells; cellNum++){
+        for(int limit = 0; limit < 11; limit++){
+            cellStates[cellNum][limit] = rhs.cellStates[cellNum][limit];
+        }
+    }
+    return *this;
+}
+
 Deduction::Deduction(const Deduction &oth) :
     numCells(oth.numCells) {
 

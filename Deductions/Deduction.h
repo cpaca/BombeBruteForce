@@ -25,7 +25,7 @@ public:
     Deduction(size_t numCells, bool def);
 
     ~Deduction();
-    Deduction operator=(const Deduction& oth) = delete;
+    Deduction& operator=(const Deduction& rhs);
     Deduction(const Deduction& oth);
 
     bool get(size_t cell, size_t mines) const;
