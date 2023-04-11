@@ -49,7 +49,7 @@ std::string DeductionManager::toLongStr(const std::string &pre, const Deduction 
     out << pre;
     out << "Self result:\n";
     out << self.toLongStr(pre + " ", parent);
-    out << "End of self result\n";
+    out << "End of self result" << std::endl;
     for(int cellNum = 0; cellNum < numCells; cellNum++){
         auto cell = children[cellNum];
         std::stringstream cellOut; // haha, pronounced "sellout"
