@@ -82,7 +82,7 @@ std::string DeductionManager::toLongStr(const std::string &pre, const Deduction 
 
         if(cellHasData){
             if(!printed){
-                out << "Self has no special data.";
+                out << pre << "Self has no special data.";
                 printed = true;
             }
             out << cellOut.str();
