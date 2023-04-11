@@ -53,6 +53,11 @@ std::string DeductionManager::toLongStr(const std::string &pre, const Deduction 
     std::stringstream out;
     bool printed = false;
 
+    if(self.isUnsat()){
+        out << pre << "Self result: UNSAT\n";
+        return out.str();
+    }
+
     auto selfData = self.toLongStr(pre + " ", parent);
     if(!selfData.empty()){
         out << pre << "Self result:\n";

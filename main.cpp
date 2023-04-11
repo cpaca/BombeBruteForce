@@ -51,7 +51,8 @@ int main() {
     int* limits = new int[8] {0, 11, 11, 11, 1, 11, 11, 11};
     manager.restrict(limits);
 
-    auto results = manager.recursive_test(6);
+    std::cout << "Starting recursion." << std::endl;
+    auto results = manager.recursive_test(4);
     std::cout << results->toLongStr();
     delete[] limits;
 

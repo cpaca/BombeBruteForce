@@ -110,7 +110,7 @@ std::string Deduction::toLongStr() const {
 }
 
 bool Deduction::isUnsat() const {
-    for(int i = 0; i < numCells; i++){
+    for(int i = 1; i < numCells; i++){
         for(int j = 0; j < 11; j++){
             if(get(i,j)){
                 // true for at least one value
