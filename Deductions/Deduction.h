@@ -25,7 +25,7 @@ public:
     Deduction(size_t numCells, bool def);
 
     ~Deduction();
-    Deduction operator=(const Deduction& oth) = delete;
+    Deduction& operator=(const Deduction& rhs);
     Deduction(const Deduction& oth);
 
     bool get(size_t cell, size_t mines) const;
@@ -37,6 +37,19 @@ public:
      * but good for user-readability
      * @return This deduction as a string.
      */
+    /**
+     * Converts this deduction to a string format.
+     * This is called "to long str" because the output string will be quite long, but user-readible.
+     * The "pre" variable string is placed before each line: So toLongStr(" ") will output a " " at the start
+     * of each line.
+     * toLongStr will not return any information that is already given by the "parent".
+     * So if the parent knows cell 1 has either [0,1,2], and this Deduction is the same, then toLongStr(..., parent)
+     * will not return information about Cell 1
+     * @param pre The string to place before each line
+     * @return This deduction as a long, user-readible string.
+     */
+    std::string toLongStr(const std::string& pre, const Deduction& parent) const;
+    std::string toLongStr(const std::string& pre) const;
     std::string toLongStr() const;
 
     /**
@@ -46,6 +59,8 @@ public:
      * @return Whether or not this deduction can be considered "UNSAT"
      */
     bool isUnsat() const;
+
+    size_t getNumCells() const {return numCells;};
 private:
     // Whether Cell C has N mines is a bool
     // So each item of N mines in each cell C is a bool
@@ -55,6 +70,5 @@ private:
     bool** cellStates;
     size_t numCells;
 };
-
 
 #endif //BOMBEBRUTEFORCE_DEDUCTION_H

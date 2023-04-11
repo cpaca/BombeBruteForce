@@ -84,8 +84,6 @@ RegionManager::RegionManager(RegionType** regionTypes, size_t numRegions) :
         while(bits > 0){
             if(bits%2 == 1){
                 expr region = *regionSums[regionNum];
-                std::cout << region << std::endl;
-                std::cout << cell << std::endl;
                 region = region - cell;
                 regionSums[regionNum][0] = region;
             }
@@ -135,10 +133,7 @@ RegionManager::~RegionManager() {
 
 void RegionManager::test(int *cellLimits) {
     solver.push();
-    for(size_t i = 1; i < numCells; i++){
-        auto cell = *cells[i];
-        solver.add(cell <= cellLimits[i]);
-    }
+    restrict(cellLimits);
     std::cout << "Solver state:\n";
     std::cout << solver << "\n";
     std::cout << "SMT2 solver state:\n";
@@ -150,6 +145,35 @@ void RegionManager::test(int *cellLimits) {
     std::cout << data.toLongStr();
 
     solver.pop();
+}
+
+void RegionManager::restrict(int *cellLimits) {
+    for(size_t i = 1; i < numCells; i++){
+        auto cell = *cells[i];
+        solver.add(cell <= cellLimits[i]);
+    }
+}
+
+DeductionManager* RegionManager::recursive_test(int index) { // NOLINT(misc-no-recursion)
+    Deduction self = getDeduction();
+    auto* out = new DeductionManager(self);
+    for(int cellNum = index; cellNum < numCells; cellNum++){
+        auto cell = *cells[cellNum];
+        solver.push();
+        for(int limit = 10; limit >= 0; limit--){
+            // By going from 10 to 0 instead of 0 to 11 (or i guess 10)
+            // we don't need to call push and pop nearly as much
+            // though I need to experiment with how much CPU time this saves since now the z3 solver has to
+            // figure it out (though i don't doubt that their internals can do it faster than I can)
+            solver.add(cell <= limit);
+
+            // cellNum + 1 because we don't want to manipulate cellNum twice.
+            DeductionManager* recursiveOut = recursive_test(cellNum + 1);
+            out->set(cellNum, limit, recursiveOut);
+        }
+        solver.pop();
+    }
+    return out;
 }
 
 Deduction RegionManager::getDeduction() {

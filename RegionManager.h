@@ -8,6 +8,7 @@
 
 #include "RegionTypes/RegionType.h"
 #include "Deductions/Deduction.h"
+#include "Deductions/DeductionManager.h"
 
 class RegionManager {
 public:
@@ -19,7 +20,20 @@ public:
 
     // Returns "void" for now so I can just print the output and see what I get
     // but in the future I'll need to port the Deduction class.
+    // Equivalent to restrict(cellLimits), printing some debug stuff, then printing getDeduction().toLongStr()
     void test(int* cellLimits);
+
+    // Applies certain limits to the solver
+    // More or less used for debugging stuff out.
+    // Treats 11s as ?s.
+    void restrict(int* cellLimits);
+
+    /**
+     * Equivalent (but faster than) recursive test(), applying limits to position [index] and beyond.
+     * At index = numCells, simply returns a DeductionManager* with only Deductions in it.
+     * @param index The first index to start manipulating.
+     */
+    DeductionManager* recursive_test(int index);
 private:
     z3::context ctx;
     z3::solver solver;
