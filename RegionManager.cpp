@@ -126,6 +126,11 @@ RegionManager::RegionManager(RegionType** regionTypes, size_t numRegions) :
     for(int i = 0; i < 20; i++){
         deductionTimes[i] = 0;
     }
+
+    currLimits = new int[numCells];
+    for(int i = 1; i < numCells; i++){
+        currLimits[i] = 11;
+    }
 }
 
 RegionManager::~RegionManager() {
@@ -144,6 +149,8 @@ RegionManager::~RegionManager() {
 
     delete[] recursionTimes;
     delete[] deductionTimes;
+
+    delete[] currLimits;
 }
 
 void RegionManager::test(int *cellLimits) {
@@ -164,6 +171,7 @@ void RegionManager::test(int *cellLimits) {
 
 void RegionManager::restrict(int *cellLimits) {
     for(size_t i = 1; i < numCells; i++){
+        currLimits[i] = cellLimits[i];
         auto cell = *cells[i];
         solver.add(cell <= cellLimits[i]);
     }
@@ -193,6 +201,9 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
         recursionTimes[7] -= clock();
         auto lastDeduction = self;
         recursionTimes[7] += clock();
+
+        // Save the cell limit so we can reload it later
+        auto cellLimit = currLimits[cellNum];
         for(int limit = 10; limit >= 0; limit--){
             // By going from 10 to 0 instead of 0 to 11 (or i guess 10)
             // we don't need to call push and pop nearly as much
@@ -201,6 +212,9 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
             recursionTimes[4] -= clock();
             solver.add(cell <= limit);
             recursionTimes[4] += clock();
+
+            // Update the limits
+            currLimits[cellNum] = limit;
 
             // cellNum + 1 because we don't want to manipulate cellNum twice.
             // Note that lastDeduction is always the result of a less-restrictive limitation on this cell
@@ -216,6 +230,9 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
             out->set(cellNum, limit, recursiveOut);
             recursionTimes[5] += clock();
         }
+        // and reset the currLimits
+        currLimits[cellNum] = cellLimit;
+
         recursionTimes[6] -= clock();
         solver.pop();
         recursionTimes[6] += clock();
@@ -229,6 +246,7 @@ DeductionManager *RegionManager::recursive_test(int index) { // NOLINT(misc-no-r
 }
 
 std::ostream &RegionManager::getClockStr(std::ostream &stream) {
+    stream << "getClockStr() data: \n";
     stream << "getDeduction() time: " << recursionTimes[0] << "\n";
     stream << "new DeductionManager time: " << recursionTimes[1] << "\n";
     stream << "[auto cell = ] time: " << recursionTimes[2] << "\n";
@@ -239,18 +257,19 @@ std::ostream &RegionManager::getClockStr(std::ostream &stream) {
     stream << "out->set() time: " << recursionTimes[5] << "\n";
     stream << "solver.pop() time: " << recursionTimes[6] << "\n";
     stream << "\n";
-    stream << "getClockStr() data: \n";
     stream << "Deduction init time: " << deductionTimes[0] << "\n";
     stream << "[auto cell] time: " << deductionTimes[1] << "\n";
-    stream << "oth.get() time: " << deductionTimes[2] << "\n";
+    stream << "[oth] known-falsy time: " << deductionTimes[2] << "\n";
     stream << "oth.get() falsy values: " << dataGetFalsy << "\n";
     stream << "oth.get() truthy values: " << dataGetTruthy << "\n";
-    stream << "[auto assumption] time: " << deductionTimes[4] << "\n";
-    stream << "solver.check() time: " << deductionTimes[5] << "\n";
-    stream << "solver.get_model() time: " << deductionTimes[6] << "\n";
-    stream << "Model parsing time: " << deductionTimes[7] << "\n";
+    stream << "Deduction known-truthy time: " << deductionTimes[3] << "\n";
     stream << "Model reduced check calls by: " << modelTruthy << "\n";
     stream << "Model falsy: " << modelFalsy << "\n";
+    stream << "[for model in models] loop time: " << deductionTimes[8] << "\n";
+    stream << "[auto assumption] time: " << deductionTimes[4] << "\n";
+    stream << "solver.check() time: " << deductionTimes[5] << "\n";
+    stream << "getAndSaveModel() time: " << deductionTimes[6] << "\n";
+    stream << "[int* model] processing time: " << deductionTimes[7] << "\n";
     stream << std::endl;
     return stream;
 }
@@ -264,6 +283,26 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
     deductionTimes[0] -= clock();
     Deduction data(numCells, false);
     deductionTimes[0] += clock();
+
+    // load data from models
+    deductionTimes[8] -= clock();
+    for(auto model : models){
+        bool validModel = true;
+        for(int i = 1; i < numCells; i++){
+            if(model[i] > currLimits[i]){
+                // Not valid for these limits.
+                validModel = false;
+                break;
+            }
+        }
+        if(validModel){
+            // Model is valid for these limits.
+            for(int i = 1; i < numCells; i++){
+                data.set(i, model[i], true);
+            }
+        }
+    }
+    deductionTimes[8] += clock();
 
     for(size_t cellNum = 1; cellNum < numCells; cellNum++){
         deductionTimes[1] -= clock();
@@ -286,11 +325,12 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
             if(data.get(cellNum, numMines)){
                 deductionTimes[3] += clock();
                 modelTruthy++;
-                // We already know this to be true from the Model.
+                // We already know this to be true from other optimizations.
                 continue;
             }
             deductionTimes[3] += clock();
             modelFalsy++;
+
             deductionTimes[4] -= clock();
             auto assumption = cell == numMines;
             deductionTimes[4] += clock();
@@ -307,29 +347,66 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
             }
             else{
                 deductionTimes[6] -= clock();
-                auto model = solver.get_model();
+                auto model = getAndSaveModel();
                 deductionTimes[6] += clock();
+
                 deductionTimes[7] -= clock();
-                for(int i = 0; i < model.size(); i++){
-                    auto var = model[i];
-                    auto name = var.name().str();
-                    auto modelCellNum = nameToCellNum(name.c_str());
-                    if(modelCellNum < cellNum){
-                        // If modelCellNum is invalid, it'll be 0, which is less than any cell num.
-                        // If we've already analyzed this cell completely, it'll be less than this cell num.
-                        // In both of these cases we shouldn't do more calculation on this variable.
-                        continue;
+                if(model.empty()){
+                    modelNullptr++;
+                    // well.
+                    // default behavior
+                    // We know it COULD be numMines mines
+                    data.set(cellNum, numMines, true);
+                }
+                else{
+                    // Use the model to update all information.
+                    // since we know the model to be accurate (we just used getAndSaveModel())
+                    for(int i = 1; i < numCells; i++){
+                        // Cell number i could have model[i] mines in it.
+                        // In theory.
+                        data.set(i, model[i], true);
                     }
-                    auto valueExpr = model.get_const_interp(var);
-                    auto value = valueExpr.as_int64();
-                    // It's possible for this cell to have [value] mines.
-                    data.set(modelCellNum, value, true);
                 }
                 deductionTimes[7] += clock();
             }
         }
     }
     return data;
+}
+
+std::vector<int> RegionManager::getAndSaveModel() {
+    auto solverModel = solver.get_model();
+    std::vector<int> model(8);
+    // fill with 0s just in case.
+    for(int i = 0; i < numCells; i++){
+        model[i] = -1;
+    }
+
+    for(int i = 0; i < solverModel.size(); i++){
+        auto var = solverModel[i];
+        auto name = var.name().str();
+        auto modelCellNum = nameToCellNum(name.c_str());
+        if(modelCellNum < 1){
+            // If modelCellNum is invalid, it'll be 0, and we shouldn't modify model[]
+            continue;
+        }
+        auto valueExpr = solverModel.get_const_interp(var);
+        auto value = valueExpr.as_int64();
+        model[modelCellNum] = value;
+    }
+
+    // Validate model
+    for(int i = 1; i < numCells; i++){
+        if(model[i] == -1){
+            // invalid model
+            model.clear();
+            return model;
+        }
+    }
+
+    // Save model.
+    models.push_back(model);
+    return model;
 }
 
 size_t RegionManager::nameToCellNum(const char *name){
