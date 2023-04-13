@@ -286,7 +286,7 @@ std::ostream &RegionManager::getClockStr(std::ostream &stream) {
     stream << "Deduction known-truthy time: " << deductionTimes[3] << "\n";
     stream << "Fast-falsy time: " << deductionTimes[10] << "\n";
     stream << "Fast-falsy: " << fastFalsy << "\n";
-    stream << "No fast-falsy" << noFastFalsy << "\n";
+    stream << "No fast-falsy: " << noFastFalsy << "\n";
     stream << "Model reduced check calls by: " << modelTruthy << "\n";
     stream << "Model falsy: " << modelFalsy << "\n";
     stream << "[for model in models] loop time: " << deductionTimes[8] << "\n";
@@ -400,13 +400,28 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
                 // Commented out because data now defaults to falsy
                 // data.set(cellNum, numMines, false);
 
-                // output cellLimits (if you wanna debug stuff)
+                // output some debug stuff
+                // if you want to look for fast-falsy cases
                 /*
                 std::cout << "[";
                 for(int i = 1; i < numCells; i++){
                     std::cout << currLimits[i] << ", ";
                 }
                 std::cout << "]\n";
+
+                int scan[] = {-1, 11, 11, 11, 11, 11, 0, 11};
+                bool read = true;
+                for(int i = 1; i < 8; i++){
+                    if(currLimits[i] != scan[i]){
+                        read = false;
+                        break;
+                    }
+                }
+
+                if(read){
+                    std::cout << "\n" << solver.unsat_core() << "\n";
+                    std::cout << "\n" << solver.assertions() << "\n";
+                }
                 //*/
             }
             else{
@@ -434,6 +449,13 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
                 deductionTimes[7] += clock();
             }
         }
+    }
+    if(data.isUnsat()){
+        std::cout << "[";
+        for(int i = 1; i < numCells; i++){
+            std::cout << currLimits[i] << ", ";
+        }
+        std::cout << "]\n";
     }
     return data;
 }
