@@ -408,8 +408,10 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
                     std::cout << currLimits[i] << ", ";
                 }
                 std::cout << "]\n";
+                //*/
 
-                int scan[] = {-1, 11, 11, 11, 11, 11, 0, 11};
+                /*
+                int scan[] = {-1, 11, 11, 11, 0, 11, 0, 11};
                 bool read = true;
                 for(int i = 1; i < 8; i++){
                     if(currLimits[i] != scan[i]){
@@ -451,11 +453,30 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
         }
     }
     if(data.isUnsat()){
+        // Some debug information.
         std::cout << "[";
         for(int i = 1; i < numCells; i++){
             std::cout << currLimits[i] << ", ";
         }
         std::cout << "]\n";
+
+        int scan[] = {11, 11, 11, 11, 0, 11, 0, 11};
+        bool read = true;
+        for(int i = 1; i < 8; i++){
+            if(scan[i] == 11){
+                // doesn't matter
+                continue;
+            }
+            if(currLimits[i] != scan[i]){
+                read = false;
+                break;
+            }
+        }
+
+        if(read){
+            // std::cout << "\n" << solver.unsat_core() << "\n";
+            // std::cout << "\n" << solver.assertions() << "\n";
+        }
     }
     return data;
 }
