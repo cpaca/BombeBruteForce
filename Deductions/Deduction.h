@@ -31,7 +31,6 @@ public:
     bool get(size_t cell, size_t mines) const;
     void set(size_t cell, size_t mines, bool state);
     // Used because model() only returns cell names, so I need to figure out what cell they came from.
-    void set(const char* cellName, size_t mines, bool state);
 
     /**
      * Converts this deduction into a string format.

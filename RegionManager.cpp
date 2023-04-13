@@ -290,15 +290,46 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
                 for(int i = 0; i < model.size(); i++){
                     auto var = model[i];
                     auto name = var.name().str();
+                    auto modelCellNum = nameToCellNum(name.c_str());
+                    if(modelCellNum < cellNum){
+                        // If modelCellNum is invalid, it'll be 0, which is less than any cell num.
+                        // If we've already analyzed this cell completely, it'll be less than this cell num.
+                        // In both of these cases we shouldn't do more calculation on this variable.
+                        continue;
+                    }
                     auto valueExpr = model.get_const_interp(var);
                     auto value = valueExpr.as_int64();
-                    data.set(name.c_str(), value, true);
+                    // It's possible for this cell to have [value] mines.
+                    data.set(modelCellNum, value, true);
                 }
                 deductionTimes[11] += clock();
-                // If result is SAT then it is possible for cell to have numMines mines
-                data.set(cellNum, numMines, true);
             }
         }
     }
     return data;
+}
+
+size_t RegionManager::nameToCellNum(const char *name){
+    // Note: This returns 0 for invalid cell nums
+    // because size_t is an UNSIGNED long, so -1 is the biggest number
+
+    size_t cellNum = 0;
+    for(int ptrIndex = 0; name[ptrIndex] != '\0'; ptrIndex++){
+        // aka until the end of the thing
+        char letter = name[ptrIndex];
+        if(letter >= 'a' && letter <= 'z'){
+            // If this is falsy then most likely this is a region variable.
+            cellNum = cellNum | (1 << (letter - 'a'));
+        }
+        else{
+            // Most likely a region variable?
+            return 0;
+        }
+    }
+
+    if(cellNum == 0){
+        // I don't know.
+        return 0;
+    }
+    return cellNum;
 }

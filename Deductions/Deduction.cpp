@@ -67,36 +67,6 @@ void Deduction::set(size_t cell, size_t mines, bool state) {
     cellStates[cell][mines] = state;
 }
 
-void Deduction::set(const char *cellName, size_t mines, bool state) {
-    if(mines == -1){
-        // possible ... if you fucked up with the input, lmao.
-        return;
-    }
-
-    size_t cellNum = 0;
-    int ptrIndex = 0;
-    while(cellName[ptrIndex] != '\0'){
-        // aka until the end of the thing
-        char letter = cellName[ptrIndex];
-        if(letter >= 'a' && letter <= 'z'){
-            // If this is falsy then most likely this is a region variable.
-            cellNum = cellNum | (1 << (letter - 'a'));
-        }
-        else{
-            // Most likely a region variable?
-            return;
-        }
-        ptrIndex++;
-    }
-
-    if(cellNum == 0){
-        // I don't know.
-        return;
-    }
-
-    set(cellNum, mines, state);
-}
-
 std::string Deduction::toLongStr(const std::string& pre, const Deduction& parent) const {
     std::stringstream out;
 

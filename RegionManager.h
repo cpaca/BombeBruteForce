@@ -76,6 +76,8 @@ private:
      * @return A deduction with all information true in the input deduction and true in this system.
      */
     Deduction getDeduction(const Deduction& oth);
+
+    static size_t nameToCellNum(const char* name);
 };
 
 
