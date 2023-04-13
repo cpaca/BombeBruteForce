@@ -114,6 +114,18 @@ RegionManager::RegionManager(RegionType** regionTypes, size_t numRegions) :
         // A small optimization.
         solver.add(regionVar <= regionType->getMaxMines());
     }
+
+    // Stuff to help with timing management.
+    // These arrays are probably too big but I don't wanna have to change it later if it's too small.
+    recursionTimes = new uint64_t[20];
+    for(int i = 0; i < 20; i++){
+        recursionTimes[i] = 0;
+    }
+
+    deductionTimes = new uint64_t[20];
+    for(int i = 0; i < 20; i++){
+        deductionTimes[i] = 0;
+    }
 }
 
 RegionManager::~RegionManager() {
@@ -129,6 +141,9 @@ RegionManager::~RegionManager() {
         delete cells[i];
     }
     delete[] cells;
+
+    delete[] recursionTimes;
+    delete[] deductionTimes;
 }
 
 void RegionManager::test(int *cellLimits) {
@@ -155,25 +170,60 @@ void RegionManager::restrict(int *cellLimits) {
 }
 
 DeductionManager* RegionManager::recursive_test(int index) { // NOLINT(misc-no-recursion)
+    recursionTimes[0] += clock();
     Deduction self = getDeduction();
+    recursionTimes[1] += clock();
     auto* out = new DeductionManager(self);
+    recursionTimes[2] += clock();
+
+    // not all of these indices are necessary but I keep them all just in case.
+
     for(int cellNum = index; cellNum < numCells; cellNum++){
+        recursionTimes[3] += clock();
         auto cell = *cells[cellNum];
+        recursionTimes[4] += clock();
         solver.push();
+        recursionTimes[5] += clock();
         for(int limit = 10; limit >= 0; limit--){
             // By going from 10 to 0 instead of 0 to 11 (or i guess 10)
             // we don't need to call push and pop nearly as much
             // though I need to experiment with how much CPU time this saves since now the z3 solver has to
             // figure it out (though i don't doubt that their internals can do it faster than I can)
+            recursionTimes[6] += clock();
             solver.add(cell <= limit);
+            recursionTimes[7] += clock();
 
             // cellNum + 1 because we don't want to manipulate cellNum twice.
             DeductionManager* recursiveOut = recursive_test(cellNum + 1);
+            recursionTimes[8] += clock();
             out->set(cellNum, limit, recursiveOut);
+            recursionTimes[9] += clock();
         }
+        recursionTimes[10] += clock();
         solver.pop();
+        recursionTimes[11] += clock();
     }
     return out;
+}
+
+std::ostream &RegionManager::getClockStr(std::ostream &stream) {
+    stream << "getDeduction() time: " << (recursionTimes[1]-recursionTimes[0]) << "\n";
+    stream << "new DeductionManager time: " << (recursionTimes[2]-recursionTimes[1]) << "\n";
+    stream << "[auto cell = ] time: " << (recursionTimes[4]-recursionTimes[3]) << "\n";
+    stream << "solver.push() time: " << (recursionTimes[5]-recursionTimes[4]) << "\n";
+    stream << "solver.add() time: " << (recursionTimes[7]-recursionTimes[6]) << "\n";
+    stream << "out->set() time: " << (recursionTimes[9]-recursionTimes[8]) << "\n";
+    stream << "solver.pop() time: " << (recursionTimes[11]-recursionTimes[10]) << "\n";
+    stream << "\n";
+    stream << "getClockStr() data: \n";
+    stream << "Deduction copying time: " << (deductionTimes[1]-deductionTimes[0]) << "\n";
+    stream << "[auto cell] time: " << (deductionTimes[3]-deductionTimes[2]) << "\n";
+    stream << "data.get() time: " << (deductionTimes[5]-deductionTimes[4]) << "\n";
+    stream << "data.get() falsy values: " << (deductionTimes[9]) << "\n";
+    stream << "[auto assumption] time: " << (deductionTimes[7]-deductionTimes[6]) << "\n";
+    stream << "solver.check() time: " << (deductionTimes[8]-deductionTimes[7]) << "\n";
+    stream << std::endl;
+    return stream;
 }
 
 Deduction RegionManager::getDeduction() {
@@ -182,20 +232,31 @@ Deduction RegionManager::getDeduction() {
 }
 
 Deduction RegionManager::getDeduction(const Deduction &oth) {
+    deductionTimes[0] += clock();
     Deduction data(oth);
+    deductionTimes[1] += clock();
 
     for(size_t cellNum = 1; cellNum < numCells; cellNum++){
+        deductionTimes[2] += clock();
         auto cell = *cells[cellNum];
+        deductionTimes[3] += clock();
 
         for(int numMines = 0; numMines < 11; numMines++){
+            deductionTimes[4] += clock();
             if(!data.get(cellNum, numMines)){
+                deductionTimes[9] += 1;
+                deductionTimes[5] += clock();
                 // Super-deduction knows that this isn't true
                 // So it can't be true here, either.
                 continue;
             }
+            deductionTimes[5] += clock();
 
+            deductionTimes[6] += clock();
             auto assumption = cell == numMines;
+            deductionTimes[7] += clock();
             auto result = solver.check(1, &assumption);
+            deductionTimes[8] += clock();
             // If result is UNSAT then it is not possible for cell to have numMines mines
             // If result is NOT UNSAT then it is NOT (not possible for cell to have numMines mines)
             // If result is NOT UNSAT then it is possible for cell to have numMines mines

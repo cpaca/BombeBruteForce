@@ -5,6 +5,7 @@
 #ifndef BOMBEBRUTEFORCE_REGIONMANAGER_H
 #define BOMBEBRUTEFORCE_REGIONMANAGER_H
 
+#include <iostream>
 
 #include "RegionTypes/RegionType.h"
 #include "Deductions/Deduction.h"
@@ -34,6 +35,12 @@ public:
      * @param index The first index to start manipulating.
      */
     DeductionManager* recursive_test(int index);
+
+    /**
+     * Saves clock data from this RegionManager into a stream.
+     * I don't use operator<< in case there's other strings I wish to overload in the future.
+     */
+    std::ostream& getClockStr(std::ostream& stream);
 private:
     z3::context ctx;
     z3::solver solver;
@@ -45,6 +52,11 @@ private:
      * This is because index 0 would be represented by the cell not covered by ANY region
      */
     size_t numCells;
+
+    // Variables for calculating how long each task takes.
+    // These are uint64_t because I'm adding a LOT of long-type values
+    uint64_t* recursionTimes;
+    uint64_t* deductionTimes;
 
     /**
      * Calculates the information available with the system loaded into the solver.
