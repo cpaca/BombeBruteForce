@@ -246,6 +246,7 @@ DeductionManager *RegionManager::recursive_test(int index) { // NOLINT(misc-no-r
 }
 
 std::ostream &RegionManager::getClockStr(std::ostream &stream) {
+    stream << "getClockStr() data: \n";
     stream << "getDeduction() time: " << recursionTimes[0] << "\n";
     stream << "new DeductionManager time: " << recursionTimes[1] << "\n";
     stream << "[auto cell = ] time: " << recursionTimes[2] << "\n";
@@ -256,7 +257,6 @@ std::ostream &RegionManager::getClockStr(std::ostream &stream) {
     stream << "out->set() time: " << recursionTimes[5] << "\n";
     stream << "solver.pop() time: " << recursionTimes[6] << "\n";
     stream << "\n";
-    stream << "getClockStr() data: \n";
     stream << "Deduction init time: " << deductionTimes[0] << "\n";
     stream << "[auto cell] time: " << deductionTimes[1] << "\n";
     stream << "[oth] known-falsy time: " << deductionTimes[2] << "\n";
