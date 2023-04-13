@@ -144,6 +144,12 @@ RegionManager::~RegionManager() {
 
     delete[] recursionTimes;
     delete[] deductionTimes;
+
+    // Clean up all the models
+    // Each int* in models was generated in getAndSaveModels so we need to clean them up
+    for(int* model : models){
+        delete[] model;
+    }
 }
 
 void RegionManager::test(int *cellLimits) {
@@ -242,15 +248,16 @@ std::ostream &RegionManager::getClockStr(std::ostream &stream) {
     stream << "getClockStr() data: \n";
     stream << "Deduction init time: " << deductionTimes[0] << "\n";
     stream << "[auto cell] time: " << deductionTimes[1] << "\n";
-    stream << "oth.get() time: " << deductionTimes[2] << "\n";
+    stream << "[oth] known-falsy time: " << deductionTimes[2] << "\n";
     stream << "oth.get() falsy values: " << dataGetFalsy << "\n";
     stream << "oth.get() truthy values: " << dataGetTruthy << "\n";
-    stream << "[auto assumption] time: " << deductionTimes[4] << "\n";
-    stream << "solver.check() time: " << deductionTimes[5] << "\n";
-    stream << "solver.get_model() time: " << deductionTimes[6] << "\n";
-    stream << "Model parsing time: " << deductionTimes[7] << "\n";
+    stream << "Deduction known-truthy time: " << deductionTimes[3] << "\n";
     stream << "Model reduced check calls by: " << modelTruthy << "\n";
     stream << "Model falsy: " << modelFalsy << "\n";
+    stream << "[auto assumption] time: " << deductionTimes[4] << "\n";
+    stream << "solver.check() time: " << deductionTimes[5] << "\n";
+    stream << "getAndSaveModel() time: " << deductionTimes[6] << "\n";
+    stream << "[int* model] processing time: " << deductionTimes[7] << "\n";
     stream << std::endl;
     return stream;
 }
@@ -286,11 +293,12 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
             if(data.get(cellNum, numMines)){
                 deductionTimes[3] += clock();
                 modelTruthy++;
-                // We already know this to be true from the Model.
+                // We already know this to be true from other optimizations.
                 continue;
             }
             deductionTimes[3] += clock();
             modelFalsy++;
+
             deductionTimes[4] -= clock();
             auto assumption = cell == numMines;
             deductionTimes[4] += clock();
@@ -307,29 +315,66 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
             }
             else{
                 deductionTimes[6] -= clock();
-                auto model = solver.get_model();
+                auto model = getAndSaveModel();
                 deductionTimes[6] += clock();
+
                 deductionTimes[7] -= clock();
-                for(int i = 0; i < model.size(); i++){
-                    auto var = model[i];
-                    auto name = var.name().str();
-                    auto modelCellNum = nameToCellNum(name.c_str());
-                    if(modelCellNum < cellNum){
-                        // If modelCellNum is invalid, it'll be 0, which is less than any cell num.
-                        // If we've already analyzed this cell completely, it'll be less than this cell num.
-                        // In both of these cases we shouldn't do more calculation on this variable.
-                        continue;
+                if(model == nullptr){
+                    modelNullptr++;
+                    // well.
+                    // default behavior
+                    // We know it COULD be numMines mines
+                    data.set(cellNum, numMines, true);
+                }
+                else{
+                    // Use the model to update all information.
+                    // since we know the model to be accurate (we just used getAndSaveModel())
+                    for(int i = 1; i < numCells; i++){
+                        // Cell number i could have model[i] mines in it.
+                        // In theory.
+                        data.set(i, model[i], true);
                     }
-                    auto valueExpr = model.get_const_interp(var);
-                    auto value = valueExpr.as_int64();
-                    // It's possible for this cell to have [value] mines.
-                    data.set(modelCellNum, value, true);
                 }
                 deductionTimes[7] += clock();
             }
         }
     }
     return data;
+}
+
+int *RegionManager::getAndSaveModel() {
+    auto solverModel = solver.get_model();
+    int* model = new int[numCells];
+    // fill with 0s just in case.
+    for(int i = 0; i < numCells; i++){
+        model[i] = -1;
+    }
+
+    for(int i = 0; i < solverModel.size(); i++){
+        auto var = solverModel[i];
+        auto name = var.name().str();
+        auto modelCellNum = nameToCellNum(name.c_str());
+        if(modelCellNum < 1){
+            // If modelCellNum is invalid, it'll be 0, and we shouldn't modify model[]
+            continue;
+        }
+        auto valueExpr = solverModel.get_const_interp(var);
+        auto value = valueExpr.as_int64();
+        model[modelCellNum] = value;
+    }
+
+    // Validate model
+    for(int i = 1; i < numCells; i++){
+        if(model[i] == -1){
+            // invalid model
+            delete[] model;
+            return nullptr;
+        }
+    }
+
+    // Save model.
+    models.push_back(model);
+    return model;
 }
 
 size_t RegionManager::nameToCellNum(const char *name){

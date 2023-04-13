@@ -55,6 +55,8 @@ private:
      */
     size_t numCells;
 
+    std::vector<int*> models;
+
     // Variables for calculating how long each task takes.
     // These are uint64_t because I'm adding a LOT of long-type values
     uint64_t* recursionTimes;
@@ -63,6 +65,7 @@ private:
     int dataGetTruthy = 0;
     int modelTruthy = 0;
     int modelFalsy = 0;
+    int modelNullptr = 0;
 
     /**
      * Calculates the information available with the system loaded into the solver.
@@ -76,6 +79,12 @@ private:
      * @return A deduction with all information true in the input deduction and true in this system.
      */
     Deduction getDeduction(const Deduction& oth);
+
+    /**
+     * Do NOT run this if the last solver.check() state was UNSAT.
+     * @return The current Z3 Model from solver.check()
+     */
+    int* getAndSaveModel();
 
     static size_t nameToCellNum(const char* name);
 };
