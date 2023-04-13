@@ -61,6 +61,8 @@ private:
     uint64_t* deductionTimes;
     int dataGetFalsy = 0;
     int dataGetTruthy = 0;
+    int modelTruthy = 0;
+    int modelFalsy = 0;
 
     /**
      * Calculates the information available with the system loaded into the solver.

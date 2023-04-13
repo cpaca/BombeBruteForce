@@ -1,17 +1,21 @@
 Starting recursion.
-getDeduction() time: 1603858
-new DeductionManager time: 2857
-[auto cell = ] time: 51
-solver.push() time: 1255
-solver.add() time: 26139
-out->set() time: 453
-solver.pop() time: 1246
+getDeduction() time: 1151658
+new DeductionManager time: 2705
+[auto cell = ] time: 26
+solver.push() time: 1258
+solver.add() time: 24393
+out->set() time: 353
+solver.pop() time: 847
 
 getClockStr() data:
-Deduction copying time: 1554
-[auto cell] time: 3590
-data.get() time: 27989
+Deduction copying time: 1209
+[auto cell] time: 2630
+data.get() time: 22748
 data.get() falsy values: 111353
 data.get() truthy values: 21703
-[auto assumption] time: 36215
-solver.check() time: 1493047
+[auto assumption] time: 7998
+solver.check() time: 454045
+solver.get_model() time: 603605
+Model parsing time: 30457
+Model reduced check calls by: 15202
+Model falsy: 6501

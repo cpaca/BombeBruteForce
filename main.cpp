@@ -53,7 +53,7 @@ int main() {
 
     std::cout << "Starting recursion." << std::endl;
     auto results = manager.recursive_test(5);
-    // std::cout << results->toLongStr();
+    std::cout << results->toLongStr();
     manager.getClockStr(std::cout);
     delete[] limits;
 

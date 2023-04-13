@@ -228,6 +228,10 @@ std::ostream &RegionManager::getClockStr(std::ostream &stream) {
     stream << "data.get() truthy values: " << (dataGetTruthy) << "\n";
     stream << "[auto assumption] time: " << (deductionTimes[7]-deductionTimes[6]) << "\n";
     stream << "solver.check() time: " << (deductionTimes[8]-deductionTimes[7]) << "\n";
+    stream << "solver.get_model() time: " << (deductionTimes[10]-deductionTimes[9]) << "\n";
+    stream << "Model parsing time: " << (deductionTimes[11]-deductionTimes[10]) << "\n";
+    stream << "Model reduced check calls by: " << modelTruthy << "\n";
+    stream << "Model falsy: " << modelFalsy << "\n";
     stream << std::endl;
     return stream;
 }
@@ -239,7 +243,7 @@ Deduction RegionManager::getDeduction() {
 
 Deduction RegionManager::getDeduction(const Deduction &oth) {
     deductionTimes[0] += clock();
-    Deduction data(oth);
+    Deduction data(numCells, false);
     deductionTimes[1] += clock();
 
     for(size_t cellNum = 1; cellNum < numCells; cellNum++){
@@ -249,7 +253,7 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
 
         for(int numMines = 0; numMines < 11; numMines++){
             deductionTimes[4] += clock();
-            if(!data.get(cellNum, numMines)){
+            if(!oth.get(cellNum, numMines)){
                 deductionTimes[5] += clock();
                 dataGetFalsy++;
                 // Super-deduction knows that this isn't true
@@ -258,6 +262,13 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
             }
             deductionTimes[5] += clock();
             dataGetTruthy++;
+
+            if(data.get(cellNum, numMines)){
+                modelTruthy++;
+                // We already know this to be true from the Model.
+                continue;
+            }
+            modelFalsy++;
 
             deductionTimes[6] += clock();
             auto assumption = cell == numMines;
@@ -269,7 +280,23 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
             // If result is NOT UNSAT then it is possible for cell to have numMines mines
             if(result == unsat){
                 // If result is UNSAT then it is not possible for cell to have numMines mines
-                data.set(cellNum, numMines, false);
+                // Commented out because data now defaults to falsy
+                // data.set(cellNum, numMines, false);
+            }
+            else{
+                deductionTimes[9] += clock();
+                auto model = solver.get_model();
+                deductionTimes[10] += clock();
+                for(int i = 0; i < model.size(); i++){
+                    auto var = model[i];
+                    auto name = var.name().str();
+                    auto valueExpr = model.get_const_interp(var);
+                    auto value = valueExpr.as_int64();
+                    data.set(name.c_str(), value, true);
+                }
+                deductionTimes[11] += clock();
+                // If result is SAT then it is possible for cell to have numMines mines
+                data.set(cellNum, numMines, true);
             }
         }
     }
