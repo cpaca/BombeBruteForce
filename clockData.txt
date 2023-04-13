@@ -1,25 +1,25 @@
 getClockStr() data:
-getDeduction() time: 6592000
-new DeductionManager time: 322531
-[auto cell = ] time: 4579
-solver.push() time: 427487
-[lastDeduction = self] time: 14896
-solver.add() time: 603117
-[lastDeduction = recursiveOut->getDeduction()] time: 193687
-out->set() time: 46734
-solver.pop() time: 85286
+getDeduction() time: 6254402
+new DeductionManager time: 303015
+[auto cell = ] time: 4095
+solver.push() time: 401206
+[lastDeduction = self] time: 14067
+solver.add() time: 568215
+[lastDeduction = recursiveOut->getDeduction()] time: 184153
+out->set() time: 42282
+solver.pop() time: 79665
 
-Deduction init time: 97555
-[auto cell] time: 341492
-[oth] range-finding time: 368256
-[oth] known-falsy time: 585311
-oth.get() falsy values: 22176
+Deduction init time: 93825
+[auto cell] time: 319260
+[oth] range-finding time: 343610
+[oth] known-falsy time: 576106
+oth.get() falsy values: 243936
 oth.get() truthy values: 3411242
-Deduction known-truthy time: 579057
+Deduction known-truthy time: 537685
 Model reduced check calls by: 3386634
 Model falsy: 24608
-[for model in models] loop time: 421591
-[auto assumption] time: 24832
-solver.check() time: 2250067
-getAndSaveModel() time: 1874
-[int* model] processing time: 2
+[for model in models] loop time: 403104
+[auto assumption] time: 24732
+solver.check() time: 2126576
+getAndSaveModel() time: 1613
+[int* model] processing time: 1

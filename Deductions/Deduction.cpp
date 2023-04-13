@@ -132,7 +132,7 @@ int Deduction::getMinMinesInCell(size_t cellNum) const {
     }
     // no mine counts are possible at all
     // possibly a result of "remove redundant deductions"? idk
-    return -1;
+    return 0;
 }
 
 int Deduction::getMaxMinesInCell(size_t cellNum) const {
@@ -143,5 +143,5 @@ int Deduction::getMaxMinesInCell(size_t cellNum) const {
     }
     // no mine counts are possible at all
     // possibly a result of "remove redundant deductions"? idk
-    return -1;
+    return 10;
 }
