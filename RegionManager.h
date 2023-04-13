@@ -55,7 +55,9 @@ private:
      */
     size_t numCells;
 
-    std::vector<int*> models;
+    // vector<vector<int>> since we can't have a vector<int*>
+    std::vector<std::vector<int>> models;
+    int* currLimits;
 
     // Variables for calculating how long each task takes.
     // These are uint64_t because I'm adding a LOT of long-type values
@@ -84,7 +86,7 @@ private:
      * Do NOT run this if the last solver.check() state was UNSAT.
      * @return The current Z3 Model from solver.check()
      */
-    int* getAndSaveModel();
+    std::vector<int> getAndSaveModel();
 
     static size_t nameToCellNum(const char* name);
 };

@@ -126,6 +126,11 @@ RegionManager::RegionManager(RegionType** regionTypes, size_t numRegions) :
     for(int i = 0; i < 20; i++){
         deductionTimes[i] = 0;
     }
+
+    currLimits = new int[numCells];
+    for(int i = 1; i < numCells; i++){
+        currLimits[i] = 11;
+    }
 }
 
 RegionManager::~RegionManager() {
@@ -145,11 +150,7 @@ RegionManager::~RegionManager() {
     delete[] recursionTimes;
     delete[] deductionTimes;
 
-    // Clean up all the models
-    // Each int* in models was generated in getAndSaveModels so we need to clean them up
-    for(int* model : models){
-        delete[] model;
-    }
+    delete[] currLimits;
 }
 
 void RegionManager::test(int *cellLimits) {
@@ -319,7 +320,7 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
                 deductionTimes[6] += clock();
 
                 deductionTimes[7] -= clock();
-                if(model == nullptr){
+                if(model.empty()){
                     modelNullptr++;
                     // well.
                     // default behavior
@@ -342,9 +343,9 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
     return data;
 }
 
-int *RegionManager::getAndSaveModel() {
+std::vector<int> RegionManager::getAndSaveModel() {
     auto solverModel = solver.get_model();
-    int* model = new int[numCells];
+    std::vector<int> model(8);
     // fill with 0s just in case.
     for(int i = 0; i < numCells; i++){
         model[i] = -1;
@@ -367,8 +368,8 @@ int *RegionManager::getAndSaveModel() {
     for(int i = 1; i < numCells; i++){
         if(model[i] == -1){
             // invalid model
-            delete[] model;
-            return nullptr;
+            model.clear();
+            return model;
         }
     }
 
