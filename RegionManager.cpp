@@ -259,6 +259,7 @@ std::ostream &RegionManager::getClockStr(std::ostream &stream) {
     stream << "\n";
     stream << "Deduction init time: " << deductionTimes[0] << "\n";
     stream << "[auto cell] time: " << deductionTimes[1] << "\n";
+    stream << "[oth] range-finding time: " << deductionTimes[9] << "\n";
     stream << "[oth] known-falsy time: " << deductionTimes[2] << "\n";
     stream << "oth.get() falsy values: " << dataGetFalsy << "\n";
     stream << "oth.get() truthy values: " << dataGetTruthy << "\n";
@@ -309,7 +310,13 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
         auto cell = *cells[cellNum];
         deductionTimes[1] += clock();
 
-        for(int numMines = 0; numMines < 11; numMines++){
+        deductionTimes[9] -= clock();
+        int rangeMin = oth.getMinMinesInCell(cellNum);
+        int rangeMax = oth.getMaxMinesInCell(cellNum); // note that oth.get(cellNum, rangeMax) is TRUE (assuming rangeMax isn't -1)
+        deductionTimes[9] += clock();
+
+        // since rangeMax is inclusive, we use <= instead of <
+        for(int numMines = rangeMin; numMines <= rangeMax; numMines++){
             deductionTimes[2] -= clock();
             if(!oth.get(cellNum, numMines)){
                 deductionTimes[2] += clock();

@@ -61,6 +61,10 @@ public:
     bool isUnsat() const;
 
     size_t getNumCells() const {return numCells;};
+
+    // Used for certain optimizations.
+    int getMinMinesInCell(size_t cellNum) const;
+    int getMaxMinesInCell(size_t cellNum) const;
 private:
     // Whether Cell C has N mines is a bool
     // So each item of N mines in each cell C is a bool

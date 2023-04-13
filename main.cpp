@@ -58,7 +58,7 @@ int main() {
     // output detailed information to a file
     std::ofstream out("../details.txt");
     out << results->toLongStr();
-    
+
     manager.getClockStr(std::cout);
 
     delete[] limits;

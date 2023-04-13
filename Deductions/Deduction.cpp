@@ -121,3 +121,27 @@ bool Deduction::isUnsat() const {
     // true for no values
     return true;
 }
+
+int Deduction::getMinMinesInCell(size_t cellNum) const {
+    for(int i = 0; i < 11; i++){
+        if(get(cellNum, i)){
+            // there could be this many mines in this cell
+            // and we know all lesser-mine-counts aren't possible
+            return i;
+        }
+    }
+    // no mine counts are possible at all
+    // possibly a result of "remove redundant deductions"? idk
+    return -1;
+}
+
+int Deduction::getMaxMinesInCell(size_t cellNum) const {
+    for(int i = 10; i >= 0; i--){
+        if(get(cellNum, i)){
+            return i;
+        }
+    }
+    // no mine counts are possible at all
+    // possibly a result of "remove redundant deductions"? idk
+    return -1;
+}
