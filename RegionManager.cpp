@@ -224,7 +224,8 @@ std::ostream &RegionManager::getClockStr(std::ostream &stream) {
     stream << "Deduction copying time: " << (deductionTimes[1]-deductionTimes[0]) << "\n";
     stream << "[auto cell] time: " << (deductionTimes[3]-deductionTimes[2]) << "\n";
     stream << "data.get() time: " << (deductionTimes[5]-deductionTimes[4]) << "\n";
-    stream << "data.get() falsy values: " << (deductionTimes[9]) << "\n";
+    stream << "data.get() falsy values: " << (dataGetFalsy) << "\n";
+    stream << "data.get() truthy values: " << (dataGetTruthy) << "\n";
     stream << "[auto assumption] time: " << (deductionTimes[7]-deductionTimes[6]) << "\n";
     stream << "solver.check() time: " << (deductionTimes[8]-deductionTimes[7]) << "\n";
     stream << std::endl;
@@ -249,13 +250,14 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
         for(int numMines = 0; numMines < 11; numMines++){
             deductionTimes[4] += clock();
             if(!data.get(cellNum, numMines)){
-                deductionTimes[9] += 1;
                 deductionTimes[5] += clock();
+                dataGetFalsy++;
                 // Super-deduction knows that this isn't true
                 // So it can't be true here, either.
                 continue;
             }
             deductionTimes[5] += clock();
+            dataGetTruthy++;
 
             deductionTimes[6] += clock();
             auto assumption = cell == numMines;
