@@ -188,6 +188,11 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
         recursionTimes[3] -= clock();
         solver.push();
         recursionTimes[3] += clock();
+
+        // This is equivalent to if the limit on this cell was 99
+        recursionTimes[7] -= clock();
+        auto lastDeduction = self;
+        recursionTimes[7] += clock();
         for(int limit = 10; limit >= 0; limit--){
             // By going from 10 to 0 instead of 0 to 11 (or i guess 10)
             // we don't need to call push and pop nearly as much
@@ -198,11 +203,15 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
             recursionTimes[4] += clock();
 
             // cellNum + 1 because we don't want to manipulate cellNum twice.
-            // TODO: Implement optimization:
-            //  Instead of using <self> parameter, use the last output's recursiveOut. (Or, if it doesn't exist, self.)
-            //  AKA define a variable lastDeduction = self, and lastDeduction = recursiveOut.deduction,
-            //  resetting lastDeduction every time the limit for loop resets. (AKA reset it somewhere between line 102 and 106.)
-            DeductionManager* recursiveOut = recursive_test(cellNum + 1, self);
+            // Note that lastDeduction is always the result of a less-restrictive limitation on this cell
+            // Either because the lastDeduction was from when the limit was one greater
+            // or because it was from when the limit was 99.
+            DeductionManager* recursiveOut = recursive_test(cellNum + 1, lastDeduction);
+
+            recursionTimes[8] -= clock();
+            lastDeduction = recursiveOut->getDeduction();
+            recursionTimes[8] += clock();
+
             recursionTimes[5] -= clock();
             out->set(cellNum, limit, recursiveOut);
             recursionTimes[5] += clock();
@@ -224,7 +233,9 @@ std::ostream &RegionManager::getClockStr(std::ostream &stream) {
     stream << "new DeductionManager time: " << recursionTimes[1] << "\n";
     stream << "[auto cell = ] time: " << recursionTimes[2] << "\n";
     stream << "solver.push() time: " << recursionTimes[3] << "\n";
+    stream << "[lastDeduction = self] time: " << recursionTimes[7] << "\n";
     stream << "solver.add() time: " << recursionTimes[4] << "\n";
+    stream << "[lastDeduction = recursiveOut->getDeduction()] time: " << recursionTimes[8] << "\n";
     stream << "out->set() time: " << recursionTimes[5] << "\n";
     stream << "solver.pop() time: " << recursionTimes[6] << "\n";
     stream << "\n";

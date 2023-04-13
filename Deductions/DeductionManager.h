@@ -28,6 +28,8 @@ public:
      */
     std::string toLongStr(const std::string& pre, const Deduction& parent) const;
     std::string toLongStr() const;
+
+    Deduction getDeduction() const {return self;};
 private:
     /**
      * The deduction that this DeducitonManager knows about.
