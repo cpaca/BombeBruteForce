@@ -43,6 +43,12 @@ public:
      * I don't use operator<< in case there's other strings I wish to overload in the future.
      */
     std::ostream& getClockStr(std::ostream& stream);
+
+    /**
+     * Gives the list of models.
+     * Added because I vaguely feel like some models are being added twice, which shouldn't be possible.
+     */
+     std::ostream& getModels(std::ostream& stream);
 private:
     z3::context ctx;
     z3::solver solver;
@@ -68,6 +74,8 @@ private:
     int modelTruthy = 0;
     int modelFalsy = 0;
     int modelNullptr = 0;
+    int fastFalsy = 0;
+    int noFastFalsy = 0;
 
     /**
      * Calculates the information available with the system loaded into the solver.

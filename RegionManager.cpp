@@ -284,6 +284,9 @@ std::ostream &RegionManager::getClockStr(std::ostream &stream) {
     stream << "oth.get() falsy values: " << dataGetFalsy << "\n";
     stream << "oth.get() truthy values: " << dataGetTruthy << "\n";
     stream << "Deduction known-truthy time: " << deductionTimes[3] << "\n";
+    stream << "Fast-falsy time: " << deductionTimes[10] << "\n";
+    stream << "Fast-falsy: " << fastFalsy << "\n";
+    stream << "No fast-falsy" << noFastFalsy << "\n";
     stream << "Model reduced check calls by: " << modelTruthy << "\n";
     stream << "Model falsy: " << modelFalsy << "\n";
     stream << "[for model in models] loop time: " << deductionTimes[8] << "\n";
@@ -291,6 +294,18 @@ std::ostream &RegionManager::getClockStr(std::ostream &stream) {
     stream << "solver.check() time: " << deductionTimes[5] << "\n";
     stream << "getAndSaveModel() time: " << deductionTimes[6] << "\n";
     stream << "[int* model] processing time: " << deductionTimes[7] << "\n";
+    stream << std::endl;
+    return stream;
+}
+
+std::ostream &RegionManager::getModels(std::ostream& stream) {
+    for(auto model:models){
+        stream << "[";
+        for(auto elem : model){
+            stream << elem << ", ";
+        }
+        stream << "]\n";
+    }
     stream << std::endl;
     return stream;
 }
@@ -358,6 +373,19 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
             deductionTimes[3] += clock();
             modelFalsy++;
 
+            deductionTimes[10] -= clock();
+            auto cellLimit = currLimits[cellNum];
+            if(cellLimit < numMines){
+                deductionTimes[10] += clock();
+                // we're testing if the cell has == numMines mines
+                // AND if it has < numMines mines.
+                // obviously, falsy.
+                fastFalsy++;
+                continue;
+            }
+            deductionTimes[10] += clock();
+            noFastFalsy++;
+
             deductionTimes[4] -= clock();
             auto assumption = cell == numMines;
             deductionTimes[4] += clock();
@@ -371,6 +399,15 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
                 // If result is UNSAT then it is not possible for cell to have numMines mines
                 // Commented out because data now defaults to falsy
                 // data.set(cellNum, numMines, false);
+
+                // output cellLimits (if you wanna debug stuff)
+                /*
+                std::cout << "[";
+                for(int i = 1; i < numCells; i++){
+                    std::cout << currLimits[i] << ", ";
+                }
+                std::cout << "]\n";
+                //*/
             }
             else{
                 deductionTimes[6] -= clock();

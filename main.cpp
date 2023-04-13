@@ -50,7 +50,7 @@ int main() {
     RegionManager manager(types, 3);
 
     int* limits = new int[8] {0, 11, 11, 11, 11, 11, 11, 11};
-    manager.restrict(limits);
+    // manager.restrict(limits);
 
     std::cout << "Starting recursion." << std::endl;
     auto results = manager.recursive_test(3);
@@ -60,6 +60,8 @@ int main() {
     out << results->toLongStr();
 
     manager.getClockStr(std::cout);
+
+    manager.getModels(std::cout);
 
     delete[] limits;
 
