@@ -1,0 +1,16 @@
+Starting recursion.
+getDeduction() time: 1278449
+new DeductionManager time: 2368
+[auto cell = ] time: 45
+solver.push() time: 976
+solver.add() time: 21010
+out->set() time: 332
+solver.pop() time: 931
+
+getClockStr() data:
+Deduction copying time: 1270
+[auto cell] time: 2836
+data.get() time: 23044
+data.get() falsy values: 111353
+[auto assumption] time: 28137
+solver.check() time: 1188653
