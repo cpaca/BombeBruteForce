@@ -52,9 +52,9 @@ int main() {
     manager.restrict(limits);
 
     std::cout << "Starting recursion." << std::endl;
-    auto results = manager.recursive_test(4);
+    auto results = manager.recursive_test(5);
     std::cout << results->toLongStr();
-    // manager.getClockStr(std::cout);
+    manager.getClockStr(std::cout);
     delete[] limits;
 
     for(size_t i = 0; i < 3; i++){

@@ -170,38 +170,46 @@ void RegionManager::restrict(int *cellLimits) {
 }
 
 DeductionManager* RegionManager::recursive_test(int index, const Deduction &check) { // NOLINT(misc-no-recursion)
-    recursionTimes[0] += clock();
+    recursionTimes[0] -= clock();
     Deduction self = getDeduction(check);
-    recursionTimes[1] += clock();
+    recursionTimes[0] += clock();
+
+    recursionTimes[1] -= clock();
     auto* out = new DeductionManager(self);
-    recursionTimes[2] += clock();
+    recursionTimes[1] += clock();
 
     // not all of these indices are necessary but I keep them all just in case.
 
     for(int cellNum = index; cellNum < numCells; cellNum++){
-        recursionTimes[3] += clock();
+        recursionTimes[2] -= clock();
         auto cell = *cells[cellNum];
-        recursionTimes[4] += clock();
+        recursionTimes[2] += clock();
+
+        recursionTimes[3] -= clock();
         solver.push();
-        recursionTimes[5] += clock();
+        recursionTimes[3] += clock();
         for(int limit = 10; limit >= 0; limit--){
             // By going from 10 to 0 instead of 0 to 11 (or i guess 10)
             // we don't need to call push and pop nearly as much
             // though I need to experiment with how much CPU time this saves since now the z3 solver has to
             // figure it out (though i don't doubt that their internals can do it faster than I can)
-            recursionTimes[6] += clock();
+            recursionTimes[4] -= clock();
             solver.add(cell <= limit);
-            recursionTimes[7] += clock();
+            recursionTimes[4] += clock();
 
             // cellNum + 1 because we don't want to manipulate cellNum twice.
+            // TODO: Implement optimization:
+            //  Instead of using <self> parameter, use the last output's recursiveOut. (Or, if it doesn't exist, self.)
+            //  AKA define a variable lastDeduction = self, and lastDeduction = recursiveOut.deduction,
+            //  resetting lastDeduction every time the limit for loop resets. (AKA reset it somewhere between line 102 and 106.)
             DeductionManager* recursiveOut = recursive_test(cellNum + 1, self);
-            recursionTimes[8] += clock();
+            recursionTimes[5] -= clock();
             out->set(cellNum, limit, recursiveOut);
-            recursionTimes[9] += clock();
+            recursionTimes[5] += clock();
         }
-        recursionTimes[10] += clock();
+        recursionTimes[6] -= clock();
         solver.pop();
-        recursionTimes[11] += clock();
+        recursionTimes[6] += clock();
     }
     return out;
 }
@@ -212,24 +220,24 @@ DeductionManager *RegionManager::recursive_test(int index) { // NOLINT(misc-no-r
 }
 
 std::ostream &RegionManager::getClockStr(std::ostream &stream) {
-    stream << "getDeduction() time: " << (recursionTimes[1]-recursionTimes[0]) << "\n";
-    stream << "new DeductionManager time: " << (recursionTimes[2]-recursionTimes[1]) << "\n";
-    stream << "[auto cell = ] time: " << (recursionTimes[4]-recursionTimes[3]) << "\n";
-    stream << "solver.push() time: " << (recursionTimes[5]-recursionTimes[4]) << "\n";
-    stream << "solver.add() time: " << (recursionTimes[7]-recursionTimes[6]) << "\n";
-    stream << "out->set() time: " << (recursionTimes[9]-recursionTimes[8]) << "\n";
-    stream << "solver.pop() time: " << (recursionTimes[11]-recursionTimes[10]) << "\n";
+    stream << "getDeduction() time: " << recursionTimes[0] << "\n";
+    stream << "new DeductionManager time: " << recursionTimes[1] << "\n";
+    stream << "[auto cell = ] time: " << recursionTimes[2] << "\n";
+    stream << "solver.push() time: " << recursionTimes[3] << "\n";
+    stream << "solver.add() time: " << recursionTimes[4] << "\n";
+    stream << "out->set() time: " << recursionTimes[5] << "\n";
+    stream << "solver.pop() time: " << recursionTimes[6] << "\n";
     stream << "\n";
     stream << "getClockStr() data: \n";
-    stream << "Deduction copying time: " << (deductionTimes[1]-deductionTimes[0]) << "\n";
-    stream << "[auto cell] time: " << (deductionTimes[3]-deductionTimes[2]) << "\n";
-    stream << "data.get() time: " << (deductionTimes[5]-deductionTimes[4]) << "\n";
-    stream << "data.get() falsy values: " << (dataGetFalsy) << "\n";
-    stream << "data.get() truthy values: " << (dataGetTruthy) << "\n";
-    stream << "[auto assumption] time: " << (deductionTimes[7]-deductionTimes[6]) << "\n";
-    stream << "solver.check() time: " << (deductionTimes[8]-deductionTimes[7]) << "\n";
-    stream << "solver.get_model() time: " << (deductionTimes[10]-deductionTimes[9]) << "\n";
-    stream << "Model parsing time: " << (deductionTimes[11]-deductionTimes[10]) << "\n";
+    stream << "Deduction init time: " << deductionTimes[0] << "\n";
+    stream << "[auto cell] time: " << deductionTimes[1] << "\n";
+    stream << "oth.get() time: " << deductionTimes[2] << "\n";
+    stream << "oth.get() falsy values: " << dataGetFalsy << "\n";
+    stream << "oth.get() truthy values: " << dataGetTruthy << "\n";
+    stream << "[auto assumption] time: " << deductionTimes[4] << "\n";
+    stream << "solver.check() time: " << deductionTimes[5] << "\n";
+    stream << "solver.get_model() time: " << deductionTimes[6] << "\n";
+    stream << "Model parsing time: " << deductionTimes[7] << "\n";
     stream << "Model reduced check calls by: " << modelTruthy << "\n";
     stream << "Model falsy: " << modelFalsy << "\n";
     stream << std::endl;
@@ -242,39 +250,42 @@ Deduction RegionManager::getDeduction() {
 }
 
 Deduction RegionManager::getDeduction(const Deduction &oth) {
-    deductionTimes[0] += clock();
+    deductionTimes[0] -= clock();
     Deduction data(numCells, false);
-    deductionTimes[1] += clock();
+    deductionTimes[0] += clock();
 
     for(size_t cellNum = 1; cellNum < numCells; cellNum++){
-        deductionTimes[2] += clock();
+        deductionTimes[1] -= clock();
         auto cell = *cells[cellNum];
-        deductionTimes[3] += clock();
+        deductionTimes[1] += clock();
 
         for(int numMines = 0; numMines < 11; numMines++){
-            deductionTimes[4] += clock();
+            deductionTimes[2] -= clock();
             if(!oth.get(cellNum, numMines)){
-                deductionTimes[5] += clock();
+                deductionTimes[2] += clock();
                 dataGetFalsy++;
                 // Super-deduction knows that this isn't true
                 // So it can't be true here, either.
                 continue;
             }
-            deductionTimes[5] += clock();
+            deductionTimes[2] += clock();
             dataGetTruthy++;
 
+            deductionTimes[3] -= clock();
             if(data.get(cellNum, numMines)){
+                deductionTimes[3] += clock();
                 modelTruthy++;
                 // We already know this to be true from the Model.
                 continue;
             }
+            deductionTimes[3] += clock();
             modelFalsy++;
-
-            deductionTimes[6] += clock();
+            deductionTimes[4] -= clock();
             auto assumption = cell == numMines;
-            deductionTimes[7] += clock();
+            deductionTimes[4] += clock();
+            deductionTimes[5] -= clock();
             auto result = solver.check(1, &assumption);
-            deductionTimes[8] += clock();
+            deductionTimes[5] += clock();
             // If result is UNSAT then it is not possible for cell to have numMines mines
             // If result is NOT UNSAT then it is NOT (not possible for cell to have numMines mines)
             // If result is NOT UNSAT then it is possible for cell to have numMines mines
@@ -284,9 +295,10 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
                 // data.set(cellNum, numMines, false);
             }
             else{
-                deductionTimes[9] += clock();
+                deductionTimes[6] -= clock();
                 auto model = solver.get_model();
-                deductionTimes[10] += clock();
+                deductionTimes[6] += clock();
+                deductionTimes[7] -= clock();
                 for(int i = 0; i < model.size(); i++){
                     auto var = model[i];
                     auto name = var.name().str();
@@ -302,7 +314,7 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
                     // It's possible for this cell to have [value] mines.
                     data.set(modelCellNum, value, true);
                 }
-                deductionTimes[11] += clock();
+                deductionTimes[7] += clock();
             }
         }
     }
