@@ -31,7 +31,7 @@ public:
 
     /**
      * Equivalent (but faster than) recursive test(), applying limits to position [index] and beyond.
-     * At index = numCells, simply returns a DeductionManager* with only Deductions in it.
+     * At index = numCells, simply returns a DeductionManager* with no Deductions in it.
      * @param index The first index to start manipulating.
      */
     DeductionManager* recursive_test(int index);
