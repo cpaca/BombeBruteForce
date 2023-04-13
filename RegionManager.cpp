@@ -194,7 +194,7 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
     }
     recursionTimes[10] += clock();
 
-    for(int cellNum = index; cellNum < numCells; cellNum++){
+    for(int cellNum = numCells-1; cellNum >= index; cellNum--){
         recursionTimes[2] -= clock();
         auto cell = *cells[cellNum];
         recursionTimes[2] += clock();
