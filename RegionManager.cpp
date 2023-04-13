@@ -265,6 +265,7 @@ std::ostream &RegionManager::getClockStr(std::ostream &stream) {
     stream << "Deduction known-truthy time: " << deductionTimes[3] << "\n";
     stream << "Model reduced check calls by: " << modelTruthy << "\n";
     stream << "Model falsy: " << modelFalsy << "\n";
+    stream << "[for model in models] loop time: " << deductionTimes[8] << "\n";
     stream << "[auto assumption] time: " << deductionTimes[4] << "\n";
     stream << "solver.check() time: " << deductionTimes[5] << "\n";
     stream << "getAndSaveModel() time: " << deductionTimes[6] << "\n";
@@ -284,6 +285,7 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
     deductionTimes[0] += clock();
 
     // load data from models
+    deductionTimes[8] -= clock();
     for(auto model : models){
         bool validModel = true;
         for(int i = 1; i < numCells; i++){
@@ -300,6 +302,7 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
             }
         }
     }
+    deductionTimes[8] += clock();
 
     for(size_t cellNum = 1; cellNum < numCells; cellNum++){
         deductionTimes[1] -= clock();
