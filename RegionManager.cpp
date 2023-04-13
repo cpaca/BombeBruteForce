@@ -171,6 +171,7 @@ void RegionManager::test(int *cellLimits) {
 
 void RegionManager::restrict(int *cellLimits) {
     for(size_t i = 1; i < numCells; i++){
+        currLimits[i] = cellLimits[i];
         auto cell = *cells[i];
         solver.add(cell <= cellLimits[i]);
     }
@@ -200,6 +201,9 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
         recursionTimes[7] -= clock();
         auto lastDeduction = self;
         recursionTimes[7] += clock();
+
+        // Save the cell limit so we can reload it later
+        auto cellLimit = currLimits[cellNum];
         for(int limit = 10; limit >= 0; limit--){
             // By going from 10 to 0 instead of 0 to 11 (or i guess 10)
             // we don't need to call push and pop nearly as much
@@ -208,6 +212,9 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
             recursionTimes[4] -= clock();
             solver.add(cell <= limit);
             recursionTimes[4] += clock();
+
+            // Update the limits
+            currLimits[cellNum] = limit;
 
             // cellNum + 1 because we don't want to manipulate cellNum twice.
             // Note that lastDeduction is always the result of a less-restrictive limitation on this cell
@@ -223,6 +230,9 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
             out->set(cellNum, limit, recursiveOut);
             recursionTimes[5] += clock();
         }
+        // and reset the currLimits
+        currLimits[cellNum] = cellLimit;
+
         recursionTimes[6] -= clock();
         solver.pop();
         recursionTimes[6] += clock();
@@ -272,6 +282,24 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
     deductionTimes[0] -= clock();
     Deduction data(numCells, false);
     deductionTimes[0] += clock();
+
+    // load data from models
+    for(auto model : models){
+        bool validModel = true;
+        for(int i = 1; i < numCells; i++){
+            if(model[i] > currLimits[i]){
+                // Not valid for these limits.
+                validModel = false;
+                break;
+            }
+        }
+        if(validModel){
+            // Model is valid for these limits.
+            for(int i = 1; i < numCells; i++){
+                data.set(i, model[i], true);
+            }
+        }
+    }
 
     for(size_t cellNum = 1; cellNum < numCells; cellNum++){
         deductionTimes[1] -= clock();
