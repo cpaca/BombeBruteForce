@@ -169,9 +169,9 @@ void RegionManager::restrict(int *cellLimits) {
     }
 }
 
-DeductionManager* RegionManager::recursive_test(int index) { // NOLINT(misc-no-recursion)
+DeductionManager* RegionManager::recursive_test(int index, const Deduction &check) { // NOLINT(misc-no-recursion)
     recursionTimes[0] += clock();
-    Deduction self = getDeduction();
+    Deduction self = getDeduction(check);
     recursionTimes[1] += clock();
     auto* out = new DeductionManager(self);
     recursionTimes[2] += clock();
@@ -194,7 +194,7 @@ DeductionManager* RegionManager::recursive_test(int index) { // NOLINT(misc-no-r
             recursionTimes[7] += clock();
 
             // cellNum + 1 because we don't want to manipulate cellNum twice.
-            DeductionManager* recursiveOut = recursive_test(cellNum + 1);
+            DeductionManager* recursiveOut = recursive_test(cellNum + 1, self);
             recursionTimes[8] += clock();
             out->set(cellNum, limit, recursiveOut);
             recursionTimes[9] += clock();
@@ -204,6 +204,11 @@ DeductionManager* RegionManager::recursive_test(int index) { // NOLINT(misc-no-r
         recursionTimes[11] += clock();
     }
     return out;
+}
+
+DeductionManager *RegionManager::recursive_test(int index) { // NOLINT(misc-no-recursion)
+    Deduction truthyDeduction = Deduction(numCells, true);
+    return recursive_test(index, truthyDeduction);
 }
 
 std::ostream &RegionManager::getClockStr(std::ostream &stream) {

@@ -33,7 +33,9 @@ public:
      * Equivalent (but faster than) recursive test(), applying limits to position [index] and beyond.
      * At index = numCells, simply returns a DeductionManager* with no Deductions in it.
      * @param index The first index to start manipulating.
+     * @param check Only check mine-values which are truthy in this Deduction.
      */
+    DeductionManager* recursive_test(int index, const Deduction& check);
     DeductionManager* recursive_test(int index);
 
     /**
