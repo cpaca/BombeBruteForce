@@ -1,0 +1,1747 @@
+Self result:
+ Possible mine values for cell 1: [0, 1, ]
+ Possible mine values for cell 2: [0, 1, ]
+ Possible mine values for cell 3: [0, 1, ]
+ Possible mine values for cell 4: [0, 1, 2, ]
+ Possible mine values for cell 5: [0, 1, ]
+ Possible mine values for cell 6: [0, 1, ]
+ Possible mine values for cell 7: [0, 1, ]
+End of self result
+Information for cell 4: 
+ Information if limit <= 10
+  Self has no special data.
+  Information for cell 5: 
+   Information if limit <= 10
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 10
+   Information if limit <= 9
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 9
+   Information if limit <= 8
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 8
+   Information if limit <= 7
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 7
+   Information if limit <= 6
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 6
+   Information if limit <= 5
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 5
+   Information if limit <= 4
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 4
+   Information if limit <= 3
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 3
+   Information if limit <= 2
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 2
+   Information if limit <= 1
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 1
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+    Information for cell 6: 
+     Information if limit <= 0
+      Self has no special data.
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 4: [2, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 0
+  End of information for cell 5
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 10
+ Information if limit <= 9
+  Self has no special data.
+  Information for cell 5: 
+   Information if limit <= 10
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 10
+   Information if limit <= 9
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 9
+   Information if limit <= 8
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 8
+   Information if limit <= 7
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 7
+   Information if limit <= 6
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 6
+   Information if limit <= 5
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 5
+   Information if limit <= 4
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 4
+   Information if limit <= 3
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 3
+   Information if limit <= 2
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 2
+   Information if limit <= 1
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 1
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+    Information for cell 6: 
+     Information if limit <= 0
+      Self has no special data.
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 4: [2, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 0
+  End of information for cell 5
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 9
+ Information if limit <= 8
+  Self has no special data.
+  Information for cell 5: 
+   Information if limit <= 10
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 10
+   Information if limit <= 9
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 9
+   Information if limit <= 8
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 8
+   Information if limit <= 7
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 7
+   Information if limit <= 6
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 6
+   Information if limit <= 5
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 5
+   Information if limit <= 4
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 4
+   Information if limit <= 3
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 3
+   Information if limit <= 2
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 2
+   Information if limit <= 1
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 1
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+    Information for cell 6: 
+     Information if limit <= 0
+      Self has no special data.
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 4: [2, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 0
+  End of information for cell 5
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 8
+ Information if limit <= 7
+  Self has no special data.
+  Information for cell 5: 
+   Information if limit <= 10
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 10
+   Information if limit <= 9
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 9
+   Information if limit <= 8
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 8
+   Information if limit <= 7
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 7
+   Information if limit <= 6
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 6
+   Information if limit <= 5
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 5
+   Information if limit <= 4
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 4
+   Information if limit <= 3
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 3
+   Information if limit <= 2
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 2
+   Information if limit <= 1
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 1
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+    Information for cell 6: 
+     Information if limit <= 0
+      Self has no special data.
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 4: [2, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 0
+  End of information for cell 5
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 7
+ Information if limit <= 6
+  Self has no special data.
+  Information for cell 5: 
+   Information if limit <= 10
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 10
+   Information if limit <= 9
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 9
+   Information if limit <= 8
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 8
+   Information if limit <= 7
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 7
+   Information if limit <= 6
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 6
+   Information if limit <= 5
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 5
+   Information if limit <= 4
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 4
+   Information if limit <= 3
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 3
+   Information if limit <= 2
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 2
+   Information if limit <= 1
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 1
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+    Information for cell 6: 
+     Information if limit <= 0
+      Self has no special data.
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 4: [2, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 0
+  End of information for cell 5
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 6
+ Information if limit <= 5
+  Self has no special data.
+  Information for cell 5: 
+   Information if limit <= 10
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 10
+   Information if limit <= 9
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 9
+   Information if limit <= 8
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 8
+   Information if limit <= 7
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 7
+   Information if limit <= 6
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 6
+   Information if limit <= 5
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 5
+   Information if limit <= 4
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 4
+   Information if limit <= 3
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 3
+   Information if limit <= 2
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 2
+   Information if limit <= 1
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 1
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+    Information for cell 6: 
+     Information if limit <= 0
+      Self has no special data.
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 4: [2, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 0
+  End of information for cell 5
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 5
+ Information if limit <= 4
+  Self has no special data.
+  Information for cell 5: 
+   Information if limit <= 10
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 10
+   Information if limit <= 9
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 9
+   Information if limit <= 8
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 8
+   Information if limit <= 7
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 7
+   Information if limit <= 6
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 6
+   Information if limit <= 5
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 5
+   Information if limit <= 4
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 4
+   Information if limit <= 3
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 3
+   Information if limit <= 2
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 2
+   Information if limit <= 1
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 1
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+    Information for cell 6: 
+     Information if limit <= 0
+      Self has no special data.
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 4: [2, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 0
+  End of information for cell 5
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 4
+ Information if limit <= 3
+  Self has no special data.
+  Information for cell 5: 
+   Information if limit <= 10
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 10
+   Information if limit <= 9
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 9
+   Information if limit <= 8
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 8
+   Information if limit <= 7
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 7
+   Information if limit <= 6
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 6
+   Information if limit <= 5
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 5
+   Information if limit <= 4
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 4
+   Information if limit <= 3
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 3
+   Information if limit <= 2
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 2
+   Information if limit <= 1
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 1
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+    Information for cell 6: 
+     Information if limit <= 0
+      Self has no special data.
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 4: [2, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 0
+  End of information for cell 5
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 3
+ Information if limit <= 2
+  Self has no special data.
+  Information for cell 5: 
+   Information if limit <= 10
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 10
+   Information if limit <= 9
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 9
+   Information if limit <= 8
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 8
+   Information if limit <= 7
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 7
+   Information if limit <= 6
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 6
+   Information if limit <= 5
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 5
+   Information if limit <= 4
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 4
+   Information if limit <= 3
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 3
+   Information if limit <= 2
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 2
+   Information if limit <= 1
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [1, 2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 1
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+    Information for cell 6: 
+     Information if limit <= 0
+      Self has no special data.
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 4: [2, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 0
+  End of information for cell 5
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 2
+ Information if limit <= 1
+  Self result:
+   Possible mine values for cell 3: [0, ]
+  End of self result
+  Information for cell 5: 
+   Information if limit <= 10
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 1: [0, ]
+       Possible mine values for cell 4: [1, ]
+      End of self result
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 2: [1, ]
+         Possible mine values for cell 5: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 10
+   Information if limit <= 9
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 1: [0, ]
+       Possible mine values for cell 4: [1, ]
+      End of self result
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 2: [1, ]
+         Possible mine values for cell 5: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 9
+   Information if limit <= 8
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 1: [0, ]
+       Possible mine values for cell 4: [1, ]
+      End of self result
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 2: [1, ]
+         Possible mine values for cell 5: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 8
+   Information if limit <= 7
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 1: [0, ]
+       Possible mine values for cell 4: [1, ]
+      End of self result
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 2: [1, ]
+         Possible mine values for cell 5: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 7
+   Information if limit <= 6
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 1: [0, ]
+       Possible mine values for cell 4: [1, ]
+      End of self result
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 2: [1, ]
+         Possible mine values for cell 5: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 6
+   Information if limit <= 5
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 1: [0, ]
+       Possible mine values for cell 4: [1, ]
+      End of self result
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 2: [1, ]
+         Possible mine values for cell 5: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 5
+   Information if limit <= 4
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 1: [0, ]
+       Possible mine values for cell 4: [1, ]
+      End of self result
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 2: [1, ]
+         Possible mine values for cell 5: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 4
+   Information if limit <= 3
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 1: [0, ]
+       Possible mine values for cell 4: [1, ]
+      End of self result
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 2: [1, ]
+         Possible mine values for cell 5: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 3
+   Information if limit <= 2
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 1: [0, ]
+       Possible mine values for cell 4: [1, ]
+      End of self result
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 2: [1, ]
+         Possible mine values for cell 5: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 2
+   Information if limit <= 1
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 1: [0, ]
+       Possible mine values for cell 4: [1, ]
+      End of self result
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 2: [1, ]
+         Possible mine values for cell 5: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 1
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 2: [0, ]
+     Possible mine values for cell 4: [1, ]
+    End of self result
+    Information for cell 6: 
+     Information if limit <= 10
+      Self has no special data.
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 1: [1, ]
+         Possible mine values for cell 6: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 10
+     Information if limit <= 9
+      Self has no special data.
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 1: [1, ]
+         Possible mine values for cell 6: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 9
+     Information if limit <= 8
+      Self has no special data.
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 1: [1, ]
+         Possible mine values for cell 6: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 8
+     Information if limit <= 7
+      Self has no special data.
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 1: [1, ]
+         Possible mine values for cell 6: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 7
+     Information if limit <= 6
+      Self has no special data.
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 1: [1, ]
+         Possible mine values for cell 6: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 6
+     Information if limit <= 5
+      Self has no special data.
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 1: [1, ]
+         Possible mine values for cell 6: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 5
+     Information if limit <= 4
+      Self has no special data.
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 1: [1, ]
+         Possible mine values for cell 6: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 4
+     Information if limit <= 3
+      Self has no special data.
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 1: [1, ]
+         Possible mine values for cell 6: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 3
+     Information if limit <= 2
+      Self has no special data.
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 1: [1, ]
+         Possible mine values for cell 6: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 2
+     Information if limit <= 1
+      Self has no special data.
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result:
+         Possible mine values for cell 1: [1, ]
+         Possible mine values for cell 6: [1, ]
+        End of self result
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 1
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 1: [0, ]
+       Possible mine values for cell 7: [1, ]
+      End of self result
+      Information for cell 7: 
+       Information if limit <= 0
+        Self result: UNSAT
+       End of information if limit <= 0
+      End of information for cell 7
+     End of information if limit <= 0
+    End of information for cell 6
+    Information for cell 7: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 1: [1, ]
+       Possible mine values for cell 6: [1, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 7
+   End of information if limit <= 0
+  End of information for cell 5
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 1: [0, ]
+     Possible mine values for cell 4: [1, ]
+    End of self result
+    Information for cell 7: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 2: [1, ]
+       Possible mine values for cell 5: [1, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 7
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 1
+ Information if limit <= 0
+  Self result:
+   Possible mine values for cell 1: [0, ]
+   Possible mine values for cell 2: [0, ]
+   Possible mine values for cell 5: [1, ]
+   Possible mine values for cell 6: [1, ]
+   Possible mine values for cell 7: [0, ]
+  End of self result
+  Information for cell 5: 
+   Information if limit <= 10
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result: UNSAT
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 10
+   Information if limit <= 9
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result: UNSAT
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 9
+   Information if limit <= 8
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result: UNSAT
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 8
+   Information if limit <= 7
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result: UNSAT
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 7
+   Information if limit <= 6
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result: UNSAT
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 6
+   Information if limit <= 5
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result: UNSAT
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 5
+   Information if limit <= 4
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result: UNSAT
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 4
+   Information if limit <= 3
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result: UNSAT
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 3
+   Information if limit <= 2
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result: UNSAT
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 2
+   Information if limit <= 1
+    Self has no special data.
+    Information for cell 6: 
+     Information if limit <= 0
+      Self result: UNSAT
+     End of information if limit <= 0
+    End of information for cell 6
+   End of information if limit <= 1
+   Information if limit <= 0
+    Self result: UNSAT
+   End of information if limit <= 0
+  End of information for cell 5
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result: UNSAT
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 0
+End of information for cell 4
+Information for cell 5: 
+ Information if limit <= 10
+  Self has no special data.
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 10
+ Information if limit <= 9
+  Self has no special data.
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 9
+ Information if limit <= 8
+  Self has no special data.
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 8
+ Information if limit <= 7
+  Self has no special data.
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 7
+ Information if limit <= 6
+  Self has no special data.
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 6
+ Information if limit <= 5
+  Self has no special data.
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 5
+ Information if limit <= 4
+  Self has no special data.
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 4
+ Information if limit <= 3
+  Self has no special data.
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 3
+ Information if limit <= 2
+  Self has no special data.
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 2
+ Information if limit <= 1
+  Self has no special data.
+  Information for cell 6: 
+   Information if limit <= 0
+    Self result:
+     Possible mine values for cell 4: [1, 2, ]
+    End of self result
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 1
+ Information if limit <= 0
+  Self result:
+   Possible mine values for cell 4: [1, 2, ]
+  End of self result
+  Information for cell 6: 
+   Information if limit <= 0
+    Self has no special data.
+    Information for cell 7: 
+     Information if limit <= 0
+      Self result:
+       Possible mine values for cell 4: [2, ]
+      End of self result
+     End of information if limit <= 0
+    End of information for cell 7
+   End of information if limit <= 0
+  End of information for cell 6
+ End of information if limit <= 0
+End of information for cell 5
+Information for cell 6: 
+ Information if limit <= 0
+  Self result:
+   Possible mine values for cell 4: [1, 2, ]
+  End of self result
+ End of information if limit <= 0
+End of information for cell 6

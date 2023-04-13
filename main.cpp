@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include<vector>
+#include <fstream>
 #include"z3++.h"
 #include "RegionTypes/RegionType.h"
 #include "RegionTypes/EqualsRegionType.h"
@@ -53,8 +54,13 @@ int main() {
 
     std::cout << "Starting recursion." << std::endl;
     auto results = manager.recursive_test(4);
-    std::cout << results->toLongStr();
+
+    // output detailed information to a file
+    std::ofstream out("../details.txt");
+    out << results->toLongStr();
+    
     manager.getClockStr(std::cout);
+
     delete[] limits;
 
     for(size_t i = 0; i < 3; i++){
