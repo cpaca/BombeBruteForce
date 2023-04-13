@@ -186,7 +186,13 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
     auto* out = new DeductionManager(self);
     recursionTimes[1] += clock();
 
-    // not all of these indices are necessary but I keep them all just in case.
+    recursionTimes[10] -= clock();
+    if(self.isUnsat()){
+        recursionTimes[10] += clock();
+        // Self is unsat, therefore all children will also be unsat
+        return out;
+    }
+    recursionTimes[10] += clock();
 
     for(int cellNum = index; cellNum < numCells; cellNum++){
         recursionTimes[2] -= clock();
@@ -226,6 +232,17 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
             lastDeduction = recursiveOut->getDeduction();
             recursionTimes[8] += clock();
 
+            recursionTimes[9] -= clock();
+            if(lastDeduction.isUnsat()){
+                recursionTimes[9] += clock();
+                // normally this is done when you delete the super-deduction
+                // but we don't save this into the super-deduction, so
+                delete recursiveOut;
+                // Don't save this (aka don't do out->set, there's no valuable data here)
+                break;
+            }
+            recursionTimes[9] += clock();
+
             recursionTimes[5] -= clock();
             out->set(cellNum, limit, recursiveOut);
             recursionTimes[5] += clock();
@@ -237,6 +254,7 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
         solver.pop();
         recursionTimes[6] += clock();
     }
+
     return out;
 }
 
@@ -249,11 +267,13 @@ std::ostream &RegionManager::getClockStr(std::ostream &stream) {
     stream << "getClockStr() data: \n";
     stream << "getDeduction() time: " << recursionTimes[0] << "\n";
     stream << "new DeductionManager time: " << recursionTimes[1] << "\n";
+    stream << "self.isUnsat() time:" << recursionTimes[10] << "\n";
     stream << "[auto cell = ] time: " << recursionTimes[2] << "\n";
     stream << "solver.push() time: " << recursionTimes[3] << "\n";
     stream << "[lastDeduction = self] time: " << recursionTimes[7] << "\n";
     stream << "solver.add() time: " << recursionTimes[4] << "\n";
     stream << "[lastDeduction = recursiveOut->getDeduction()] time: " << recursionTimes[8] << "\n";
+    stream << "lastDeduction.isUnsat() time: " << recursionTimes[9] << "\n";
     stream << "out->set() time: " << recursionTimes[5] << "\n";
     stream << "solver.pop() time: " << recursionTimes[6] << "\n";
     stream << "\n";
