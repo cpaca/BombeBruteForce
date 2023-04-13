@@ -53,7 +53,7 @@ int main() {
     manager.restrict(limits);
 
     std::cout << "Starting recursion." << std::endl;
-    auto results = manager.recursive_test(4);
+    auto results = manager.recursive_test(3);
 
     // output detailed information to a file
     std::ofstream out("../details.txt");
