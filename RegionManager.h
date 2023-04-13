@@ -5,6 +5,7 @@
 #ifndef BOMBEBRUTEFORCE_REGIONMANAGER_H
 #define BOMBEBRUTEFORCE_REGIONMANAGER_H
 
+#include <iostream>
 
 #include "RegionTypes/RegionType.h"
 #include "Deductions/Deduction.h"
@@ -30,10 +31,18 @@ public:
 
     /**
      * Equivalent (but faster than) recursive test(), applying limits to position [index] and beyond.
-     * At index = numCells, simply returns a DeductionManager* with only Deductions in it.
+     * At index = numCells, simply returns a DeductionManager* with no Deductions in it.
      * @param index The first index to start manipulating.
+     * @param check Only check mine-values which are truthy in this Deduction.
      */
+    DeductionManager* recursive_test(int index, const Deduction& check);
     DeductionManager* recursive_test(int index);
+
+    /**
+     * Saves clock data from this RegionManager into a stream.
+     * I don't use operator<< in case there's other strings I wish to overload in the future.
+     */
+    std::ostream& getClockStr(std::ostream& stream);
 private:
     z3::context ctx;
     z3::solver solver;
@@ -45,6 +54,15 @@ private:
      * This is because index 0 would be represented by the cell not covered by ANY region
      */
     size_t numCells;
+
+    // Variables for calculating how long each task takes.
+    // These are uint64_t because I'm adding a LOT of long-type values
+    uint64_t* recursionTimes;
+    uint64_t* deductionTimes;
+    int dataGetFalsy = 0;
+    int dataGetTruthy = 0;
+    int modelTruthy = 0;
+    int modelFalsy = 0;
 
     /**
      * Calculates the information available with the system loaded into the solver.
@@ -58,6 +76,8 @@ private:
      * @return A deduction with all information true in the input deduction and true in this system.
      */
     Deduction getDeduction(const Deduction& oth);
+
+    static size_t nameToCellNum(const char* name);
 };
 
 
