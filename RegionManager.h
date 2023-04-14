@@ -71,13 +71,12 @@ private:
     uint64_t* recursionTimes;
     uint64_t* deductionTimes;
     int dataGetFalsy = 0;
-    int dataGetTruthy = 0;
     int modelTruthy = 0;
-    int modelFalsy = 0;
     int modelNullptr = 0;
     int fastFalsy = 0;
     int noFastFalsy = 0;
     int unsatModelsCaught = 0;
+    int solverCheckCalls = 0;
 
     /**
      * Calculates the information available with the system loaded into the solver.

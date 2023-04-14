@@ -215,8 +215,11 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
             // we don't need to call push and pop nearly as much
             // though I need to experiment with how much CPU time this saves since now the z3 solver has to
             // figure it out (though i don't doubt that their internals can do it faster than I can)
+            recursionTimes[11] -= clock();
+            auto cellCompare = cell <= limit;
+            recursionTimes[11] += clock();
             recursionTimes[4] -= clock();
-            solver.add(cell <= limit);
+            solver.add(cellCompare);
             recursionTimes[4] += clock();
 
             // Update the limits
@@ -271,6 +274,7 @@ std::ostream &RegionManager::getClockStr(std::ostream &stream) {
     stream << "[auto cell = ] time: " << recursionTimes[2] << "\n";
     stream << "solver.push() time: " << recursionTimes[3] << "\n";
     stream << "[lastDeduction = self] time: " << recursionTimes[7] << "\n";
+    stream << "cellCompare time: " << recursionTimes[11] << "\n";
     stream << "solver.add() time: " << recursionTimes[4] << "\n";
     stream << "[lastDeduction = recursiveOut->getDeduction()] time: " << recursionTimes[8] << "\n";
     stream << "lastDeduction.isUnsat() time: " << recursionTimes[9] << "\n";
@@ -282,18 +286,17 @@ std::ostream &RegionManager::getClockStr(std::ostream &stream) {
     stream << "[oth] range-finding time: " << deductionTimes[9] << "\n";
     stream << "[oth] known-falsy time: " << deductionTimes[2] << "\n";
     stream << "oth.get() falsy values: " << dataGetFalsy << "\n";
-    stream << "oth.get() truthy values: " << dataGetTruthy << "\n";
     stream << "Deduction known-truthy time: " << deductionTimes[3] << "\n";
     stream << "Fast-falsy time: " << deductionTimes[10] << "\n";
     stream << "Fast-falsy: " << fastFalsy << "\n";
     stream << "No fast-falsy: " << noFastFalsy << "\n";
     stream << "Model reduced check calls by: " << modelTruthy << "\n";
-    stream << "Model falsy: " << modelFalsy << "\n";
     stream << "[for model in satModels] loop time: " << deductionTimes[8] << "\n";
     stream << "[for model in unsatModels] loop time: " << deductionTimes[10] << "\n";
     stream << "Unsat models caught: " << unsatModelsCaught << "\n";
     stream << "Unsat models known: " << unsatModels.size() << "\n";
     stream << "[auto assumption] time: " << deductionTimes[4] << "\n";
+    stream << "solver.check() calls: " << solverCheckCalls << "\n";
     stream << "solver.check() time: " << deductionTimes[5] << "\n";
     stream << "getAndSaveModel() time: " << deductionTimes[6] << "\n";
     stream << "[int* model] processing time: " << deductionTimes[7] << "\n";
@@ -398,7 +401,6 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
                 continue;
             }
             deductionTimes[2] += clock();
-            dataGetTruthy++;
 
             deductionTimes[3] -= clock();
             if(data.get(cellNum, numMines)){
@@ -408,7 +410,6 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
                 continue;
             }
             deductionTimes[3] += clock();
-            modelFalsy++;
 
             deductionTimes[10] -= clock();
             auto cellLimit = currLimits[cellNum];
@@ -426,6 +427,7 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
             deductionTimes[4] -= clock();
             auto assumption = cell == numMines;
             deductionTimes[4] += clock();
+            solverCheckCalls++;
             deductionTimes[5] -= clock();
             auto result = solver.check(1, &assumption);
             deductionTimes[5] += clock();
