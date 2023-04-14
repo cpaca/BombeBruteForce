@@ -303,7 +303,16 @@ std::ostream &RegionManager::getClockStr(std::ostream &stream) {
 }
 
 std::ostream &RegionManager::getModels(std::ostream& stream) {
+    stream << "SAT models: \n";
     for(const auto& model:satModels){
+        stream << "[";
+        for(auto elem : model){
+            stream << elem << ", ";
+        }
+        stream << "]\n";
+    }
+    stream << "\nUNSAT models: \n";
+    for(const auto& model:unsatModels){
         stream << "[";
         for(auto elem : model){
             stream << elem << ", ";
@@ -441,7 +450,7 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
 
                 // output some debug stuff
                 // if you want to look for fast-falsy cases
-                std::cout << "UNSAT if cell has " << numMines << " mines ";
+                std::cout << "UNSAT if cell " << cellNum << " has " << numMines << " mines: ";
                 printLimits();
             }
             else{
