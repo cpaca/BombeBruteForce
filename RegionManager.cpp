@@ -267,7 +267,7 @@ std::ostream &RegionManager::getClockStr(std::ostream &stream) {
     stream << "getClockStr() data: \n";
     stream << "getDeduction() time: " << recursionTimes[0] << "\n";
     stream << "new DeductionManager time: " << recursionTimes[1] << "\n";
-    stream << "self.isUnsat() time:" << recursionTimes[10] << "\n";
+    stream << "self.isUnsat() time: " << recursionTimes[10] << "\n";
     stream << "[auto cell = ] time: " << recursionTimes[2] << "\n";
     stream << "solver.push() time: " << recursionTimes[3] << "\n";
     stream << "[lastDeduction = self] time: " << recursionTimes[7] << "\n";
@@ -325,7 +325,7 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
 
     deductionTimes[8] -= clock();
     // load data from satModels
-    for(auto model : satModels){
+    for(const auto& model : satModels){
         bool validModel = true;
         for(int i = 1; i < numCells; i++){
             if(model[i] > currLimits[i]){
@@ -347,7 +347,7 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
     // Contemplate loading data from unsatModels
     if(data.isUnsat()){
         // See if the currLimits matches with one of the known UNSAT models
-        for(auto model : unsatModels){
+        for(const auto& model : unsatModels){
             bool modelMatches = true;
             for(int i = 1; i < numCells; i++){
                 if(model[i] >= currLimits[i]){
@@ -465,7 +465,7 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
             }
             else{
                 deductionTimes[6] -= clock();
-                auto model = getAndSaveModel();
+                const auto& model = getAndSaveModel();
                 deductionTimes[6] += clock();
 
                 deductionTimes[7] -= clock();

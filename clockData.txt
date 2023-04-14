@@ -1,33 +1,33 @@
 getClockStr() data:
-getDeduction() time: 4774278
-new DeductionManager time: 340338
-self.isUnsat() time:44971
-[auto cell = ] time: 4499
-solver.push() time: 486211
-[lastDeduction = self] time: 15135
-solver.add() time: 528153
-[lastDeduction = recursiveOut->getDeduction()] time: 204889
-lastDeduction.isUnsat() time: 44551
-out->set() time: 45896
-solver.pop() time: 104338
+getDeduction() time: 4237394
+new DeductionManager time: 331128
+self.isUnsat() time: 42343
+[auto cell = ] time: 4237
+solver.push() time: 450862
+[lastDeduction = self] time: 14402
+solver.add() time: 490490
+[lastDeduction = recursiveOut->getDeduction()] time: 189520
+lastDeduction.isUnsat() time: 42121
+out->set() time: 42923
+solver.pop() time: 96367
 
-Deduction init time: 98934
-[auto cell] time: 338210
-[oth] range-finding time: 372326
-[oth] known-falsy time: 609359
+Deduction init time: 92980
+[auto cell] time: 327129
+[oth] range-finding time: 354259
+[oth] known-falsy time: 562998
 oth.get() falsy values: 0
 oth.get() truthy values: 3410171
-Deduction known-truthy time: 593264
-Fast-falsy time: 50983
+Deduction known-truthy time: 559657
+Fast-falsy time: 46085
 Fast-falsy: 20740
 No fast-falsy: 2797
 Model reduced check calls by: 3386634
 Model falsy: 23537
-[for model in satModels] loop time: 443589
-[for model in unsatModels] loop time: 50983
+[for model in satModels] loop time: 150675
+[for model in unsatModels] loop time: 46085
 Unsat models caught: 153
 Unsat models known: 3
-[auto assumption] time: 3997
-solver.check() time: 269101
-getAndSaveModel() time: 2243
-[int* model] processing time: 0
+[auto assumption] time: 3829
+solver.check() time: 262615
+getAndSaveModel() time: 2233
+[int* model] processing time: 4
