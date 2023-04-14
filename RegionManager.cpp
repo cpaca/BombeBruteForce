@@ -289,7 +289,10 @@ std::ostream &RegionManager::getClockStr(std::ostream &stream) {
     stream << "No fast-falsy: " << noFastFalsy << "\n";
     stream << "Model reduced check calls by: " << modelTruthy << "\n";
     stream << "Model falsy: " << modelFalsy << "\n";
-    stream << "[for model in models] loop time: " << deductionTimes[8] << "\n";
+    stream << "[for model in satModels] loop time: " << deductionTimes[8] << "\n";
+    stream << "[for model in unsatModels] loop time: " << deductionTimes[10] << "\n";
+    stream << "Unsat models caught: " << unsatModelsCaught << "\n";
+    stream << "Unsat models known: " << unsatModels.size() << "\n";
     stream << "[auto assumption] time: " << deductionTimes[4] << "\n";
     stream << "solver.check() time: " << deductionTimes[5] << "\n";
     stream << "getAndSaveModel() time: " << deductionTimes[6] << "\n";
@@ -299,7 +302,7 @@ std::ostream &RegionManager::getClockStr(std::ostream &stream) {
 }
 
 std::ostream &RegionManager::getModels(std::ostream& stream) {
-    for(auto model:models){
+    for(const auto& model:satModels){
         stream << "[";
         for(auto elem : model){
             stream << elem << ", ";
@@ -320,9 +323,9 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
     Deduction data(numCells, false);
     deductionTimes[0] += clock();
 
-    // load data from models
     deductionTimes[8] -= clock();
-    for(auto model : models){
+    // load data from satModels
+    for(auto model : satModels){
         bool validModel = true;
         for(int i = 1; i < numCells; i++){
             if(model[i] > currLimits[i]){
@@ -339,6 +342,40 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
         }
     }
     deductionTimes[8] += clock();
+
+    deductionTimes[10] -= clock();
+    // Contemplate loading data from unsatModels
+    if(data.isUnsat()){
+        // See if the currLimits matches with one of the known UNSAT models
+        for(auto model : unsatModels){
+            bool modelMatches = true;
+            for(int i = 1; i < numCells; i++){
+                if(model[i] >= currLimits[i]){
+                    // the UNSAT model is less than or equally restrictive than this model
+                    // so the unsat model has seen more and gotten the same conclusion
+                }
+                else{
+                    // the UNSAT model has seen less. Maybe seeing more will get a different conclusion.
+                    modelMatches = false;
+                    break;
+                }
+            }
+
+            if(modelMatches){
+                // The current limits matches the UNSAT model.
+                // So the current limits are UNSAT
+                // so return the deduction
+                deductionTimes[10] += clock();
+                unsatModelsCaught++;
+                return data;
+            }
+        }
+    }
+    else{
+        // we already know it matches at least one SAT model
+        // so it won't match any unsat models
+    }
+    deductionTimes[10] += clock();
 
     for(size_t cellNum = 1; cellNum < numCells; cellNum++){
         deductionTimes[1] -= clock();
@@ -454,6 +491,7 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
     }
     if(data.isUnsat()){
         // Some debug information.
+        /*
         std::cout << "[";
         for(int i = 1; i < numCells; i++){
             std::cout << currLimits[i] << ", ";
@@ -477,6 +515,16 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
             // std::cout << "\n" << solver.unsat_core() << "\n";
             // std::cout << "\n" << solver.assertions() << "\n";
         }
+        */
+
+        // This model is definitely unsat
+        // Save this model
+        std::vector<int> model(8);
+        // This model is represented in currLimits instead of in a z3.model class.
+        for(int i = 0; i < 8; i++){
+            model[i] = currLimits[i];
+        }
+        unsatModels.push_back(model);
     }
     return data;
 }
@@ -512,7 +560,7 @@ std::vector<int> RegionManager::getAndSaveModel() {
     }
 
     // Save model.
-    models.push_back(model);
+    satModels.push_back(model);
     return model;
 }
 

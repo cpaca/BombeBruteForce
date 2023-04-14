@@ -45,8 +45,8 @@ public:
     std::ostream& getClockStr(std::ostream& stream);
 
     /**
-     * Gives the list of models.
-     * Added because I vaguely feel like some models are being added twice, which shouldn't be possible.
+     * Gives the list of satModels.
+     * Added because I vaguely feel like some satModels are being added twice, which shouldn't be possible.
      */
      std::ostream& getModels(std::ostream& stream);
 private:
@@ -62,7 +62,8 @@ private:
     size_t numCells;
 
     // vector<vector<int>> since we can't have a vector<int*>
-    std::vector<std::vector<int>> models;
+    std::vector<std::vector<int>> satModels;
+    std::vector<std::vector<int>> unsatModels;
     int* currLimits;
 
     // Variables for calculating how long each task takes.
@@ -76,6 +77,7 @@ private:
     int modelNullptr = 0;
     int fastFalsy = 0;
     int noFastFalsy = 0;
+    int unsatModelsCaught = 0;
 
     /**
      * Calculates the information available with the system loaded into the solver.
