@@ -284,13 +284,11 @@ std::ostream &RegionManager::getClockStr(std::ostream &stream) {
     stream << "Deduction init time: " << deductionTimes[0] << "\n";
     stream << "[auto cell] time: " << deductionTimes[1] << "\n";
     stream << "[oth] range-finding time: " << deductionTimes[9] << "\n";
-    stream << "[oth] known-falsy time: " << deductionTimes[2] << "\n";
-    stream << "oth.get() falsy values: " << dataGetFalsy << "\n";
-    stream << "Deduction known-truthy time: " << deductionTimes[3] << "\n";
+    stream << "Calculating which mines to check: " << deductionTimes[3] << "\n";
+    stream << "getDeduction numMines loop time: " << deductionTimes[2] << "\n";
     stream << "Fast-falsy time: " << deductionTimes[10] << "\n";
-    stream << "Fast-falsy: " << fastFalsy << "\n";
+    stream << "Fast-falsy hits: " << fastFalsy << "\n";
     stream << "No fast-falsy: " << noFastFalsy << "\n";
-    stream << "Model reduced check calls by: " << modelTruthy << "\n";
     stream << "[for model in satModels] loop time: " << deductionTimes[8] << "\n";
     stream << "[for model in unsatModels] loop time: " << deductionTimes[10] << "\n";
     stream << "Unsat models caught: " << unsatModelsCaught << "\n";
@@ -385,34 +383,33 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
         auto cell = *cells[cellNum];
         deductionTimes[1] += clock();
 
-        // Do NOT remove these rangefinding things
-        // You'd think the compiler would be smart enough to figure this or a more efficient version out itself
-        // but it doesn't, so this saves about 2.6 million clock() values
-        deductionTimes[9] -= clock();
-        int rangeMin = oth.getMinMinesInCell(cellNum);
-        int rangeMax = oth.getMaxMinesInCell(cellNum); // note that oth.get(cellNum, rangeMax) is TRUE (assuming rangeMax isn't -1)
-        deductionTimes[9] += clock();
+        // Only consider numMines if:
+        // They're "true" in the parent.
+        //   If they weren't true in the parent, they won't be true in the (more restrictive) child
+        // They're "false" in the current-data
+        //   If they were true in the current-data, they've already been considered (possibly from models)
+        deductionTimes[3] -= clock();
+        uint64_t parentMinesToConsider = oth.getCellData(cellNum);
+        uint64_t selfMinesToNotConsider = data.getCellData(cellNum);
+        uint64_t minesToConsider = parentMinesToConsider & (~selfMinesToNotConsider);
+        deductionTimes[3] += clock();
 
         // since rangeMax is inclusive, we use <= instead of <
-        for(int numMines = rangeMin; numMines <= rangeMax; numMines++){
+        int numMines = -1; // start at -1 since we instantly increment to 0.
+        while(true){
             deductionTimes[2] -= clock();
-            if(!oth.get(cellNum, numMines)){
+            numMines++;
+            if(minesToConsider < (1 << numMines)){
+                // nothing else to consider
                 deductionTimes[2] += clock();
-                dataGetFalsy++;
-                // Super-deduction knows that this isn't true
-                // So it can't be true here, either.
+                break;
+            }
+            if((minesToConsider & (1 << numMines)) == 0){
+                // do not consider mines at position numMines
+                deductionTimes[2] += clock();
                 continue;
             }
             deductionTimes[2] += clock();
-
-            deductionTimes[3] -= clock();
-            if(data.get(cellNum, numMines)){
-                deductionTimes[3] += clock();
-                modelTruthy++;
-                // We already know this to be true from other optimizations.
-                continue;
-            }
-            deductionTimes[3] += clock();
 
             deductionTimes[10] -= clock();
             auto cellLimit = currLimits[cellNum];

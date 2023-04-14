@@ -70,8 +70,6 @@ private:
     // These are uint64_t because I'm adding a LOT of long-type values
     uint64_t* recursionTimes;
     uint64_t* deductionTimes;
-    int dataGetFalsy = 0;
-    int modelTruthy = 0;
     int modelNullptr = 0;
     int fastFalsy = 0;
     int noFastFalsy = 0;

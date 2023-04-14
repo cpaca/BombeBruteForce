@@ -17,6 +17,7 @@ Deduction::Deduction(size_t numCells, bool def) :
     if(def){
         // set them all to 1 (mine exists here) instead
         setTo = ~setTo;
+        setTo &= (1 << 11)-1; // we don't record information about 11 mines and beyond
     }
     for(int i = 1; i < numCells; i++){
         cellStates[i] = setTo;
@@ -145,4 +146,8 @@ int Deduction::getMaxMinesInCell(size_t cellNum) const {
     // no mine counts are possible at all
     // possibly a result of "remove redundant deductions"? idk
     return 10;
+}
+
+uint64_t Deduction::getCellData(size_t cellNum) const {
+    return cellStates[cellNum];
 }
