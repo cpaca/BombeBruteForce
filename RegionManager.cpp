@@ -441,29 +441,8 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
 
                 // output some debug stuff
                 // if you want to look for fast-falsy cases
-                /*
-                std::cout << "[";
-                for(int i = 1; i < numCells; i++){
-                    std::cout << currLimits[i] << ", ";
-                }
-                std::cout << "]\n";
-                //*/
-
-                /*
-                int scan[] = {-1, 11, 11, 11, 0, 11, 0, 11};
-                bool read = true;
-                for(int i = 1; i < 8; i++){
-                    if(currLimits[i] != scan[i]){
-                        read = false;
-                        break;
-                    }
-                }
-
-                if(read){
-                    std::cout << "\n" << solver.unsat_core() << "\n";
-                    std::cout << "\n" << solver.assertions() << "\n";
-                }
-                //*/
+                std::cout << "UNSAT if cell has " << numMines << " mines ";
+                printLimits();
             }
             else{
                 deductionTimes[6] -= clock();
@@ -492,33 +471,6 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
         }
     }
     if(data.isUnsat()){
-        // Some debug information.
-        /*
-        std::cout << "[";
-        for(int i = 1; i < numCells; i++){
-            std::cout << currLimits[i] << ", ";
-        }
-        std::cout << "]\n";
-
-        int scan[] = {11, 11, 11, 11, 0, 11, 0, 11};
-        bool read = true;
-        for(int i = 1; i < 8; i++){
-            if(scan[i] == 11){
-                // doesn't matter
-                continue;
-            }
-            if(currLimits[i] != scan[i]){
-                read = false;
-                break;
-            }
-        }
-
-        if(read){
-            // std::cout << "\n" << solver.unsat_core() << "\n";
-            // std::cout << "\n" << solver.assertions() << "\n";
-        }
-        */
-
         // This model is definitely unsat
         // Save this model
         std::vector<int> model(8);
@@ -589,4 +541,21 @@ size_t RegionManager::nameToCellNum(const char *name){
         return 0;
     }
     return cellNum;
+}
+
+bool RegionManager::limitsEquals(const int* compareTo) {
+    for(int i = 1; i < numCells; i++){
+        if(currLimits[i] != compareTo[i]){
+            return false;
+        }
+    }
+    return true;
+}
+
+void RegionManager::printLimits() {
+    std::cout << "[";
+    for(int i = 1; i < numCells; i++){
+        std::cout << currLimits[i] << ", ";
+    }
+    std::cout << "]\n";
 }

@@ -96,6 +96,10 @@ private:
     std::vector<int> getAndSaveModel();
 
     static size_t nameToCellNum(const char* name);
+
+    // Some debugging functions so I can call these instead of rewriting the code a dozen times
+    bool limitsEquals(const int* compareTo);
+    void printLimits();
 };
 
 
