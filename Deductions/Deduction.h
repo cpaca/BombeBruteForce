@@ -71,7 +71,11 @@ private:
     // So each set of 0, 1, 2, ... mines in cell C is a bool*
     // So each cell is a bool*
     // So all cells together are a bool**
-    bool** cellStates;
+    // REFACTOR NOTE:
+    // (bool*) can be represented as an unsigned int if you do bit-operations right
+    // due to limitations, we can only go to uint_64, but that will only be an issue if we want more than 64 mines
+    // in a single cell
+    uint64_t* cellStates;
     size_t numCells;
 };
 

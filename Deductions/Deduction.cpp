@@ -12,21 +12,18 @@ Deduction::Deduction(size_t numCells) : Deduction(numCells, false) {
 
 Deduction::Deduction(size_t numCells, bool def) :
     numCells(numCells) {
-    cellStates = new bool*[numCells];
-    cellStates[0] = nullptr; // No data for the 0 cell
+    cellStates = new uint64_t[numCells];
+    uint64_t setTo = 0;
+    if(def){
+        // set them all to 1 (mine exists here) instead
+        setTo = ~setTo;
+    }
     for(int i = 1; i < numCells; i++){
-        bool* cell = new bool[11];
-        for(int j = 0; j < 11; j++){
-            cell[j] = def; // not sure if this is necessary
-        }
-        cellStates[i] = cell;
+        cellStates[i] = setTo;
     }
 }
 
 Deduction::~Deduction() {
-    for(int i = 0; i < numCells; i++){
-        delete[] cellStates[i];
-    }
     delete[] cellStates;
 }
 
@@ -38,9 +35,7 @@ Deduction& Deduction::operator=(const Deduction &rhs) {
         throw std::invalid_argument("RHS of operator= doesn't have the same number of cells.");
     }
     for(int cellNum = 1; cellNum < numCells; cellNum++){
-        for(int limit = 0; limit < 11; limit++){
-            cellStates[cellNum][limit] = rhs.cellStates[cellNum][limit];
-        }
+        cellStates[cellNum] = rhs.cellStates[cellNum];
     }
     return *this;
 }
@@ -48,23 +43,29 @@ Deduction& Deduction::operator=(const Deduction &rhs) {
 Deduction::Deduction(const Deduction &oth) :
     numCells(oth.numCells) {
 
-    cellStates = new bool*[numCells];
-    cellStates[0] = nullptr; // No data for the 0 cell
+    cellStates = new uint64_t[numCells];
     for(int i = 1; i < numCells; i++){
-        bool* cell = new bool[11];
-        for(int j = 0; j < 11; j++){
-            cell[j] = oth.get(i,j);
-        }
-        cellStates[i] = cell;
+        cellStates[i] = oth.cellStates[i];
     }
 }
 
 bool Deduction::get(size_t cell, size_t mines) const {
-    return cellStates[cell][mines];
+    // if it's 0 then no mine (return 0 != 0 -> false)
+    // if it's 1 then mine (return 1 != 0 -> true)
+    return (cellStates[cell] & (1 << mines)) != 0;
 }
 
 void Deduction::set(size_t cell, size_t mines, bool state) {
-    cellStates[cell][mines] = state;
+    uint64_t offset = 1 << mines;
+    if(state){
+        // set it to 1
+        cellStates[cell] |= offset;
+    }
+    else{
+        // set it to 0
+        // XXXXX & ~(00100) = XXXXX & 11011 = XX0XX
+        cellStates[cell] &= ~offset;
+    }
 }
 
 std::string Deduction::toLongStr(const std::string& pre, const Deduction& parent) const {

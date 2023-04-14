@@ -385,6 +385,9 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
         auto cell = *cells[cellNum];
         deductionTimes[1] += clock();
 
+        // Do NOT remove these rangefinding things
+        // You'd think the compiler would be smart enough to figure this or a more efficient version out itself
+        // but it doesn't, so this saves about 2.6 million clock() values
         deductionTimes[9] -= clock();
         int rangeMin = oth.getMinMinesInCell(cellNum);
         int rangeMax = oth.getMaxMinesInCell(cellNum); // note that oth.get(cellNum, rangeMax) is TRUE (assuming rangeMax isn't -1)
