@@ -53,13 +53,16 @@ int main() {
     // manager.restrict(limits);
 
     std::cout << "Starting recursion." << std::endl;
+    uint64_t startTime = clock();
     auto results = manager.recursive_test(3);
+    uint64_t stopTime = clock();
 
     // output detailed information to a file
     std::ofstream out("../details.txt");
     out << results->toLongStr();
 
-    manager.getClockStr(std::cout);
+    std::cout << "Total time taken: " << stopTime - startTime << std::endl;
+    // manager.getClockStr(std::cout);
 
     manager.getModels(std::cout);
 
