@@ -4,6 +4,7 @@
 
 #include <sstream>
 #include <iostream>
+#include <bitset>
 #include "RegionManager.h"
 #include "Deductions/Deduction.h"
 
@@ -225,11 +226,22 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
             // Update the limits
             currLimits[cellNum] = limit;
 
+            int scan[] = {-1, 11, 11, 11, 1, 0, 12, 0};
+            if(limitsEquals(scan)){
+                std::cout << "Debug this\n";
+                std::cout << std::bitset<3>(lastDeduction.getCellData(1)).to_string() << "\n";
+                std::cout << lastDeduction.get(1, 0) << "\n";
+                std::cout << cellNum + 1 << "\n";
+            }
+
             // cellNum + 1 because we don't want to manipulate cellNum twice.
             // Note that lastDeduction is always the result of a less-restrictive limitation on this cell
             // Either because the lastDeduction was from when the limit was one greater
             // or because it was from when the limit was 99.
             DeductionManager* recursiveOut = recursive_test(cellNum + 1, lastDeduction);
+            if(limitsEquals(scan)){
+                std::cout << recursiveOut->getDeduction().get(1,0) << "\n";
+            }
 
             recursionTimes[8] -= clock();
             lastDeduction = recursiveOut->getDeduction();
@@ -553,7 +565,11 @@ size_t RegionManager::nameToCellNum(const char *name){
 }
 
 bool RegionManager::limitsEquals(const int* compareTo) {
+    // use 12s for ?s in this function so I can search for certain situations much easier
     for(int i = 1; i < numCells; i++){
+        if(compareTo[i] == 12){
+            continue;
+        }
         if(currLimits[i] != compareTo[i]){
             return false;
         }
