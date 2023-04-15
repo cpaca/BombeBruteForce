@@ -178,13 +178,14 @@ void RegionManager::restrict(int *cellLimits) {
     }
 }
 
-DeductionManager* RegionManager::recursive_test(int index, const Deduction &check) { // NOLINT(misc-no-recursion)
+DeductionManager* RegionManager::recursive_test(int index, const Deduction &check, DeductionManager* parentDM) { // NOLINT(misc-no-recursion)
     recursionTimes[0] -= clock();
     Deduction self = getDeduction(check);
     recursionTimes[0] += clock();
 
     recursionTimes[1] -= clock();
     auto* out = new DeductionManager(self);
+    // when recursiveTest is done, parentDM will set this as an element so this we don't need to teach this about its parent
     recursionTimes[1] += clock();
 
     recursionTimes[10] -= clock();
@@ -226,6 +227,7 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
             // Update the limits
             currLimits[cellNum] = limit;
 
+            /*
             int scan[] = {-1, 11, 11, 11, 1, 0, 12, 0};
             if(limitsEquals(scan)){
                 std::cout << "Debug this\n";
@@ -233,15 +235,36 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
                 std::cout << lastDeduction.get(1, 0) << "\n";
                 std::cout << cellNum + 1 << "\n";
             }
+            */
+
+            // Consider the following:
+            // Inside all of these for-loops, we would be ...XYZ???
+            // Outside the for loops (the "out" variable) would be ...XY????
+            // The parent would be ...X?????
+            // So if parent knows that ...X?Z??? is UNSAT, we don't need to calculate here
+            if(parentDM != nullptr){
+                // The ...X?Z??? DM is "superDM"
+                auto superDM = parentDM->get(cellNum, limit);
+                // I suspect if superDM is nullptr, then it would be unsat
+                // then this wouldn't be here becuase it would've been caught by the unsat catcher
+                if(superDM != nullptr){
+                    // I was wrong.
+                    // std::cerr << "You were wrong.\n";
+                    auto superDeduction = superDM->getDeduction();
+                    lastDeduction = lastDeduction && superDeduction;
+                }
+            }
 
             // cellNum + 1 because we don't want to manipulate cellNum twice.
             // Note that lastDeduction is always the result of a less-restrictive limitation on this cell
             // Either because the lastDeduction was from when the limit was one greater
             // or because it was from when the limit was 99.
-            DeductionManager* recursiveOut = recursive_test(cellNum + 1, lastDeduction);
+            DeductionManager* recursiveOut = recursive_test(cellNum + 1, lastDeduction, out);
+            /*
             if(limitsEquals(scan)){
                 std::cout << recursiveOut->getDeduction().get(1,0) << "\n";
             }
+            */
 
             recursionTimes[8] -= clock();
             lastDeduction = recursiveOut->getDeduction();
@@ -275,7 +298,7 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
 
 DeductionManager *RegionManager::recursive_test(int index) { // NOLINT(misc-no-recursion)
     Deduction truthyDeduction = Deduction(numCells, true);
-    return recursive_test(index, truthyDeduction);
+    return recursive_test(index, truthyDeduction, nullptr);
 }
 
 std::ostream &RegionManager::getClockStr(std::ostream &stream) {
@@ -462,8 +485,8 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
 
                 // output some debug stuff
                 // if you want to look for fast-falsy cases
-                std::cout << "UNSAT if cell " << cellNum << " has " << numMines << " mines: ";
-                printLimits();
+                // std::cout << "UNSAT if cell " << cellNum << " has " << numMines << " mines: ";
+                // printLimits();
             }
             else{
                 deductionTimes[6] -= clock();

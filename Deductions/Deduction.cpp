@@ -151,3 +151,18 @@ int Deduction::getMaxMinesInCell(size_t cellNum) const {
 uint64_t Deduction::getCellData(size_t cellNum) const {
     return cellStates[cellNum];
 }
+
+void Deduction::setCellData(size_t cellNum, uint64_t data) {
+    cellStates[cellNum] = data;
+}
+
+Deduction operator&&(const Deduction &lhs, const Deduction &rhs) {
+    if(lhs.getNumCells() != rhs.getNumCells()){
+        return {lhs.getNumCells(), false}; // can't combine, all-false
+    }
+    Deduction out(lhs);
+    for(int i = 1; i < lhs.getNumCells(); i++){
+        out.setCellData(i, out.getCellData(i) & rhs.getCellData(i));
+    }
+    return out;
+}

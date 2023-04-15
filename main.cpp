@@ -61,8 +61,8 @@ int main() {
     std::ofstream out("../details.txt");
     out << results->toLongStr();
 
+    manager.getClockStr(std::cout);
     std::cout << "Total time taken: " << stopTime - startTime << std::endl;
-    // manager.getClockStr(std::cout);
 
     manager.getModels(std::cout);
 

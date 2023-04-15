@@ -3,6 +3,7 @@
 //
 
 #include <sstream>
+#include <iostream>
 
 #include "DeductionManager.h"
 
@@ -47,6 +48,10 @@ void DeductionManager::set(int cell, int mines, const Deduction& d) {
 void DeductionManager::set(int cell, int mines, DeductionManager* d){
     // don't even run checks just override the existing DeductionManager.
     children[cell][mines] = d;
+    // if d is the child of this, this is the parent of d.
+    if(d != nullptr){
+        d->setParent(this);
+    }
 }
 
 std::string DeductionManager::toLongStr(const std::string &pre, const Deduction &parent) const { // NOLINT(misc-no-recursion)
@@ -111,4 +116,12 @@ std::string DeductionManager::toLongStr(const std::string &pre, const Deduction 
 
 std::string DeductionManager::toLongStr() const {
     return toLongStr("", Deduction(numCells, true));
+}
+
+void DeductionManager::setParent(DeductionManager *newParent) {
+    if(parentDM != nullptr){
+        // cerr because this really, really shouldn't happen
+        std::cerr << "WARN: DEDUCTION-MANAGER PARENT IS OVERRIDDEN\n";
+    }
+    parentDM = newParent;
 }

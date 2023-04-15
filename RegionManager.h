@@ -35,7 +35,7 @@ public:
      * @param index The first index to start manipulating.
      * @param check Only check mine-values which are truthy in this Deduction.
      */
-    DeductionManager* recursive_test(int index, const Deduction& check);
+    DeductionManager* recursive_test(int index, const Deduction& check, DeductionManager* parentDM);
     DeductionManager* recursive_test(int index);
 
     /**
