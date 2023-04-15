@@ -67,6 +67,7 @@ public:
     int getMaxMinesInCell(size_t cellNum) const;
 
     uint64_t getCellData(size_t cellNum) const;
+    void setCellData(size_t cellNum, uint64_t data);
 private:
     // Whether Cell C has N mines is a bool
     // So each item of N mines in each cell C is a bool
@@ -80,5 +81,7 @@ private:
     uint64_t* cellStates;
     size_t numCells;
 };
+
+Deduction operator&&(const Deduction& lhs, const Deduction& rhs);
 
 #endif //BOMBEBRUTEFORCE_DEDUCTION_H
