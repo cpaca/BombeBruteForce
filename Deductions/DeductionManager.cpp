@@ -47,6 +47,8 @@ void DeductionManager::set(int cell, int mines, const Deduction& d) {
 void DeductionManager::set(int cell, int mines, DeductionManager* d){
     // don't even run checks just override the existing DeductionManager.
     children[cell][mines] = d;
+    // if d is the child of this, this is the parent of d.
+    d->parentDM = this;
 }
 
 std::string DeductionManager::toLongStr(const std::string &pre, const Deduction &parent) const { // NOLINT(misc-no-recursion)

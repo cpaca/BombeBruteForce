@@ -30,6 +30,8 @@ public:
     std::string toLongStr() const;
 
     Deduction getDeduction() const {return self;};
+    
+    DeductionManager* getParent() const { return parentDM;};
 private:
     /**
      * The deduction that this DeducitonManager knows about.
@@ -51,6 +53,12 @@ private:
      * For example, you might want a NULL DeductionManager if its Deduction is NULL.
      */
     DeductionManager*** children;
+
+    // The "parent" of this DeductionManager
+    // If this DeductionManager manages ...XYZ???
+    // then the parent would manage ...XY????
+    // For the all-?'s DeductionManager, there would be no parent so null parent.
+    DeductionManager* parentDM = nullptr;
 };
 
 
