@@ -1,31 +1,33 @@
 getClockStr() data:
-getDeduction() time: 2379867
-new DeductionManager time: 210598
-self.isUnsat() time: 41782
-[auto cell = ] time: 4456
-solver.push() time: 420129
-[lastDeduction = self] time: 5946
-cellCompare time: 173630
-solver.add() time: 310270
-[lastDeduction = recursiveOut->getDeduction()] time: 53472
-lastDeduction.isUnsat() time: 40789
-out->set() time: 41930
-solver.pop() time: 85650
+getDeduction() time: 2177187
+new DeductionManager time: 176938
+self.isUnsat() time: 41848
+[auto cell = ] time: 4244
+solver.push() time: 448744
+[lastDeduction = self] time: 5912
+cellCompare time: 177869
+solver.add() time: 317248
+[lastDeduction = recursiveOut->getDeduction()] time: 55755
+lastDeduction.isUnsat() time: 40881
+out->set() time: 42671
+solver.pop() time: 85304
 
-Deduction init time: 50342
-[auto cell] time: 310503
+Deduction init time: 48553
+[auto cell] time: 308723
 [oth] range-finding time: 0
-Calculating which mines to check: 284639
-getDeduction numMines loop time: 282015
-Fast-falsy time: 45172
-Fast-falsy hits: 20740
-No fast-falsy: 2797
-[for model in satModels] loop time: 147025
-[for model in unsatModels] loop time: 45172
+Calculating which mines to check: 282430
+getDeduction numMines loop time: 268619
+Fast-falsy time: 41039
+Fast-falsy hits: 6
+No fast-falsy: 664
+[for model in satModels] loop time: 144488
+[for model in unsatModels] loop time: 41039
 Unsat models caught: 153
 Unsat models known: 3
-[auto assumption] time: 3243
-solver.check() calls: 2797
-solver.check() time: 230385
-getAndSaveModel() time: 1794
-[int* model] processing time: 2
+[auto assumption] time: 963
+solver.check() calls: 664
+solver.check() time: 70789
+getAndSaveModel() time: 1632
+[int* model] processing time: 3
+
+Total time taken: 4023087
