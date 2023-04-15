@@ -39,12 +39,6 @@ public:
     DeductionManager* recursive_test(int index);
 
     /**
-     * Saves clock data from this RegionManager into a stream.
-     * I don't use operator<< in case there's other strings I wish to overload in the future.
-     */
-    std::ostream& getClockStr(std::ostream& stream);
-
-    /**
      * Gives the list of satModels.
      * Added because I vaguely feel like some satModels are being added twice, which shouldn't be possible.
      */
@@ -65,16 +59,6 @@ private:
     std::vector<std::vector<int>> satModels;
     std::vector<std::vector<int>> unsatModels;
     int* currLimits;
-
-    // Variables for calculating how long each task takes.
-    // These are uint64_t because I'm adding a LOT of long-type values
-    uint64_t* recursionTimes;
-    uint64_t* deductionTimes;
-    int modelNullptr = 0;
-    int fastFalsy = 0;
-    int noFastFalsy = 0;
-    int unsatModelsCaught = 0;
-    int solverCheckCalls = 0;
 
     /**
      * Calculates the information available with the system loaded into the solver.

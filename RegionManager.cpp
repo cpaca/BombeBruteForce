@@ -116,18 +116,6 @@ RegionManager::RegionManager(RegionType** regionTypes, size_t numRegions) :
         solver.add(regionVar <= regionType->getMaxMines());
     }
 
-    // Stuff to help with timing management.
-    // These arrays are probably too big but I don't wanna have to change it later if it's too small.
-    recursionTimes = new uint64_t[20];
-    for(int i = 0; i < 20; i++){
-        recursionTimes[i] = 0;
-    }
-
-    deductionTimes = new uint64_t[20];
-    for(int i = 0; i < 20; i++){
-        deductionTimes[i] = 0;
-    }
-
     currLimits = new int[numCells];
     for(int i = 1; i < numCells; i++){
         currLimits[i] = 11;
@@ -147,9 +135,6 @@ RegionManager::~RegionManager() {
         delete cells[i];
     }
     delete[] cells;
-
-    delete[] recursionTimes;
-    delete[] deductionTimes;
 
     delete[] currLimits;
 }
@@ -179,36 +164,22 @@ void RegionManager::restrict(int *cellLimits) {
 }
 
 DeductionManager* RegionManager::recursive_test(int index, const Deduction &check, DeductionManager* parentDM) { // NOLINT(misc-no-recursion)
-    recursionTimes[0] -= clock();
     Deduction self = getDeduction(check);
-    recursionTimes[0] += clock();
 
-    recursionTimes[1] -= clock();
-    auto* out = new DeductionManager(self);
     // when recursiveTest is done, parentDM will set this as an element so this we don't need to teach this about its parent
-    recursionTimes[1] += clock();
+    auto* out = new DeductionManager(self);
 
-    recursionTimes[10] -= clock();
     if(self.isUnsat()){
-        recursionTimes[10] += clock();
         // Self is unsat, therefore all children will also be unsat
         return out;
     }
-    recursionTimes[10] += clock();
 
     for(int cellNum = numCells-1; cellNum >= index; cellNum--){
-        recursionTimes[2] -= clock();
         auto cell = *cells[cellNum];
-        recursionTimes[2] += clock();
-
-        recursionTimes[3] -= clock();
         solver.push();
-        recursionTimes[3] += clock();
 
         // This is equivalent to if the limit on this cell was 99
-        recursionTimes[7] -= clock();
         auto lastDeduction = self;
-        recursionTimes[7] += clock();
 
         // Save the cell limit so we can reload it later
         auto cellLimit = currLimits[cellNum];
@@ -217,12 +188,8 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
             // we don't need to call push and pop nearly as much
             // though I need to experiment with how much CPU time this saves since now the z3 solver has to
             // figure it out (though i don't doubt that their internals can do it faster than I can)
-            recursionTimes[11] -= clock();
             auto cellCompare = cell <= limit;
-            recursionTimes[11] += clock();
-            recursionTimes[4] -= clock();
             solver.add(cellCompare);
-            recursionTimes[4] += clock();
 
             // Update the limits
             currLimits[cellNum] = limit;
@@ -266,31 +233,19 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
             }
             */
 
-            recursionTimes[8] -= clock();
             lastDeduction = recursiveOut->getDeduction();
-            recursionTimes[8] += clock();
-
-            recursionTimes[9] -= clock();
             if(lastDeduction.isUnsat()){
-                recursionTimes[9] += clock();
                 // normally this is done when you delete the super-deduction
                 // but we don't save this into the super-deduction, so
                 delete recursiveOut;
                 // Don't save this (aka don't do out->set, there's no valuable data here)
                 break;
             }
-            recursionTimes[9] += clock();
-
-            recursionTimes[5] -= clock();
             out->set(cellNum, limit, recursiveOut);
-            recursionTimes[5] += clock();
         }
         // and reset the currLimits
         currLimits[cellNum] = cellLimit;
-
-        recursionTimes[6] -= clock();
         solver.pop();
-        recursionTimes[6] += clock();
     }
 
     return out;
@@ -299,42 +254,6 @@ DeductionManager* RegionManager::recursive_test(int index, const Deduction &chec
 DeductionManager *RegionManager::recursive_test(int index) { // NOLINT(misc-no-recursion)
     Deduction truthyDeduction = Deduction(numCells, true);
     return recursive_test(index, truthyDeduction, nullptr);
-}
-
-std::ostream &RegionManager::getClockStr(std::ostream &stream) {
-    stream << "getClockStr() data: \n";
-    stream << "getDeduction() time: " << recursionTimes[0] << "\n";
-    stream << "new DeductionManager time: " << recursionTimes[1] << "\n";
-    stream << "self.isUnsat() time: " << recursionTimes[10] << "\n";
-    stream << "[auto cell = ] time: " << recursionTimes[2] << "\n";
-    stream << "solver.push() time: " << recursionTimes[3] << "\n";
-    stream << "[lastDeduction = self] time: " << recursionTimes[7] << "\n";
-    stream << "cellCompare time: " << recursionTimes[11] << "\n";
-    stream << "solver.add() time: " << recursionTimes[4] << "\n";
-    stream << "[lastDeduction = recursiveOut->getDeduction()] time: " << recursionTimes[8] << "\n";
-    stream << "lastDeduction.isUnsat() time: " << recursionTimes[9] << "\n";
-    stream << "out->set() time: " << recursionTimes[5] << "\n";
-    stream << "solver.pop() time: " << recursionTimes[6] << "\n";
-    stream << "\n";
-    stream << "Deduction init time: " << deductionTimes[0] << "\n";
-    stream << "[auto cell] time: " << deductionTimes[1] << "\n";
-    stream << "[oth] range-finding time: " << deductionTimes[9] << "\n";
-    stream << "Calculating which mines to check: " << deductionTimes[3] << "\n";
-    stream << "getDeduction numMines loop time: " << deductionTimes[2] << "\n";
-    stream << "Fast-falsy time: " << deductionTimes[10] << "\n";
-    stream << "Fast-falsy hits: " << fastFalsy << "\n";
-    stream << "No fast-falsy: " << noFastFalsy << "\n";
-    stream << "[for model in satModels] loop time: " << deductionTimes[8] << "\n";
-    stream << "[for model in unsatModels] loop time: " << deductionTimes[10] << "\n";
-    stream << "Unsat models caught: " << unsatModelsCaught << "\n";
-    stream << "Unsat models known: " << unsatModels.size() << "\n";
-    stream << "[auto assumption] time: " << deductionTimes[4] << "\n";
-    stream << "solver.check() calls: " << solverCheckCalls << "\n";
-    stream << "solver.check() time: " << deductionTimes[5] << "\n";
-    stream << "getAndSaveModel() time: " << deductionTimes[6] << "\n";
-    stream << "[int* model] processing time: " << deductionTimes[7] << "\n";
-    stream << std::endl;
-    return stream;
 }
 
 std::ostream &RegionManager::getModels(std::ostream& stream) {
@@ -364,11 +283,7 @@ Deduction RegionManager::getDeduction() {
 }
 
 Deduction RegionManager::getDeduction(const Deduction &oth) {
-    deductionTimes[0] -= clock();
     Deduction data(numCells, false);
-    deductionTimes[0] += clock();
-
-    deductionTimes[8] -= clock();
     // load data from satModels
     for(const auto& model : satModels){
         bool validModel = true;
@@ -386,9 +301,6 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
             }
         }
     }
-    deductionTimes[8] += clock();
-
-    deductionTimes[10] -= clock();
     // Contemplate loading data from unsatModels
     if(data.isUnsat()){
         // See if the currLimits matches with one of the known UNSAT models
@@ -410,71 +322,48 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
                 // The current limits matches the UNSAT model.
                 // So the current limits are UNSAT
                 // so return the deduction
-                deductionTimes[10] += clock();
-                unsatModelsCaught++;
                 return data;
             }
         }
     }
-    else{
+    else {
         // we already know it matches at least one SAT model
         // so it won't match any unsat models
     }
-    deductionTimes[10] += clock();
 
     for(size_t cellNum = 1; cellNum < numCells; cellNum++){
-        deductionTimes[1] -= clock();
         auto cell = *cells[cellNum];
-        deductionTimes[1] += clock();
 
         // Only consider numMines if:
         // They're "true" in the parent.
         //   If they weren't true in the parent, they won't be true in the (more restrictive) child
         // They're "false" in the current-data
         //   If they were true in the current-data, they've already been considered (possibly from models)
-        deductionTimes[3] -= clock();
         uint64_t parentMinesToConsider = oth.getCellData(cellNum);
         uint64_t selfMinesToNotConsider = data.getCellData(cellNum);
         uint64_t minesToConsider = parentMinesToConsider & (~selfMinesToNotConsider);
-        deductionTimes[3] += clock();
 
         // since rangeMax is inclusive, we use <= instead of <
         int numMines = -1; // start at -1 since we instantly increment to 0.
         while(true){
-            deductionTimes[2] -= clock();
             numMines++;
             if(minesToConsider < (1 << numMines)){
                 // nothing else to consider
-                deductionTimes[2] += clock();
                 break;
             }
             if((minesToConsider & (1 << numMines)) == 0){
                 // do not consider mines at position numMines
-                deductionTimes[2] += clock();
                 continue;
             }
-            deductionTimes[2] += clock();
-
-            deductionTimes[10] -= clock();
             auto cellLimit = currLimits[cellNum];
             if(cellLimit < numMines){
-                deductionTimes[10] += clock();
                 // we're testing if the cell has == numMines mines
                 // AND if it has < numMines mines.
                 // obviously, falsy.
-                fastFalsy++;
                 continue;
             }
-            deductionTimes[10] += clock();
-            noFastFalsy++;
-
-            deductionTimes[4] -= clock();
             auto assumption = cell == numMines;
-            deductionTimes[4] += clock();
-            solverCheckCalls++;
-            deductionTimes[5] -= clock();
             auto result = solver.check(1, &assumption);
-            deductionTimes[5] += clock();
             // If result is UNSAT then it is not possible for cell to have numMines mines
             // If result is NOT UNSAT then it is NOT (not possible for cell to have numMines mines)
             // If result is NOT UNSAT then it is possible for cell to have numMines mines
@@ -489,13 +378,8 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
                 // printLimits();
             }
             else{
-                deductionTimes[6] -= clock();
                 const auto& model = getAndSaveModel();
-                deductionTimes[6] += clock();
-
-                deductionTimes[7] -= clock();
                 if(model.empty()){
-                    modelNullptr++;
                     // well.
                     // default behavior
                     // We know it COULD be numMines mines
@@ -510,7 +394,6 @@ Deduction RegionManager::getDeduction(const Deduction &oth) {
                         data.set(i, model[i], true);
                     }
                 }
-                deductionTimes[7] += clock();
             }
         }
     }
