@@ -157,11 +157,11 @@ void Deduction::setCellData(size_t cellNum, uint64_t data) {
 }
 
 Deduction operator&&(const Deduction &lhs, const Deduction &rhs) {
-    if(lhs.numCells != rhs.numCells){
-        return Deduction(lhs.numCells, false); // can't combine, all-false
+    if(lhs.getNumCells() != rhs.getNumCells()){
+        return {lhs.getNumCells(), false}; // can't combine, all-false
     }
     Deduction out(lhs);
-    for(int i = 1; i < lhs.numCells; i++){
+    for(int i = 1; i < lhs.getNumCells(); i++){
         out.setCellData(i, out.getCellData(i) & rhs.getCellData(i));
     }
     return out;
