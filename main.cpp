@@ -54,14 +54,17 @@ int main() {
 
     std::cout << "Starting recursion." << std::endl;
     uint64_t startTime = clock();
-    auto results = manager.recursive_test(3);
+    auto results = manager.recursive_test(2);
     uint64_t stopTime = clock();
+    std::cout << "Stopping recursion." << std::endl;
 
     // output detailed information to a file
     std::ofstream out("../details.txt");
-    out << results->toLongStr();
+    // out << results->toLongStr();
 
-    std::cout << "Total time taken: " << stopTime - startTime << std::endl;
+    std::cout << "\nTotal time taken: " << stopTime - startTime << " \"clock cycles\"" <<  std::endl;
+    // TIL POSIX requires that this be 1 million even if my computer can be much faster...
+    std::cout << "CLOCKS_PER_SEC: " << CLOCKS_PER_SEC << "\n" << std::endl;
 
     manager.getModels(std::cout);
 
